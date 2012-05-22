@@ -6,6 +6,17 @@ import org.xml.sax.AttributeList;
 import org.xml.sax.HandlerBase;
 import org.xml.sax.SAXException;
 
+/**
+ * SAX Stack evaluation.
+ * Nodes are pushed to the stack and removed from the stack. This is done in a
+ * way that only nodes are left on the stack that correspond to the query-tree.
+ * 
+ * Node that the class which is extended is is deprecated.
+ * It is used because the assignment says it should be used.
+ * 
+ * TODO Ask what is preferred: using this deprecated stuff or refactor it.
+ *
+ */
 @SuppressWarnings("deprecation")
 public class StackEval extends HandlerBase {
 	//TODO
@@ -41,7 +52,7 @@ public class StackEval extends HandlerBase {
 	
 	@Override
 	/**
-	 * When a node nd in a document d is foudn to satisfy the ancestor
+	 * When a node nd in a document d is found to satisfy the ancestor
 	 * conditions related to node nt in t, a match object is created to record
 	 * this information.
 	 */
@@ -58,7 +69,7 @@ public class StackEval extends HandlerBase {
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
-				if( s.parent().top() == null ||							//there is no node (TODO: own idea)
+				if( s.parent().top() == null ||							//there is no node (TODO: own idea: correct??)
 					s.parent().top().getStatus() == TagState.OPEN		// or the node is open
 				) {
 					//create a match satisfying the ancestor conditions of query
@@ -68,11 +79,8 @@ public class StackEval extends HandlerBase {
 					s.push(m);
 				}
 			}
-			
-			//if(s.spar().top().getStatus() == TagState.OPEN)
 		}
 		
-		System.out.println("PRE "+currentPre+": "+localName);
 		preOfOpenNodes.push(currentPre);
 		currentPre++;			
 
@@ -95,33 +103,20 @@ public class StackEval extends HandlerBase {
 					s.top().prenumber() == preOfLastOpen
 			) {
 				//we found the corresponding match!
-				// All descendents of this match have been traversed by now,
-				//  so remove it from the s.stack :)
+				// All descendents of this match have been traversed by now.
 				Match m = s.top();
 				
 				//now do the post-check:
 				// has m matches for all children of its pattern node?
-				boolean mislukt = false;
+				//boolean mislukt = false;
 				for(TPEStack child : s.getChildren()) {
-					if(m.getChildren().get(child) == null) {
-						mislukt = true;
-						
+					if(m.getChildren().get(child) == null) {		
 						//remove m from s
 						s.pop();
 					}
 				}
 				
-				//if(mislukt) System.out.println(" * DIT DING IS MISLUKT :P");
-				//else System.out.println(" * ok for now");
-				
-				//if(!mislukt && localName.equals("person")) {
-				//	System.out.println("==================================");
-				//}
-				
-				
-			} else {
-				//System.out.println(" * Ignored");
-			}
+			} //else: ignored
 			
 		}
 

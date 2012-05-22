@@ -3,7 +3,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 
-import org.xml.sax.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.SAXParserFactory; 
 import javax.xml.parsers.ParserConfigurationException;
@@ -48,11 +48,12 @@ public class BootStrap {
 		
 		//The stacks now should only contain the Match objects that participate
 		// to complete the query.
-		for(Match m : nodeRoot.matches) System.out.println("match: "+m.prenumber());
-		for(Match m : nodePerson.matches) System.out.println("match: "+m.prenumber());
-		for(Match m : nodeEmail.matches) System.out.println("match: "+m.prenumber());
-		for(Match m : nodeName.matches) System.out.println("match: "+m.prenumber());
-		for(Match m : nodeLast.matches) System.out.println("match: "+m.prenumber());
+		for(Match m : nodePerson.matches) {
+			for(String line : m.sringyfyResults(nodePerson, "")) {
+				System.out.println(line);
+			}
+		}
+		
 
 
 	}

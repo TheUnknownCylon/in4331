@@ -32,13 +32,7 @@ public class Match {
 	 * 
 	 */
 	private HashMap<TPEStack, ArrayList<Match>> children = new HashMap<TPEStack, ArrayList<Match>>();
-	
-	/**
-	 * A pointer to TPEStack: points to the stack associated to the pattern node
-	 * nt.
-	 * TODO
-	 */
-	private TPEStack st;
+
 	
 	
 	/**
@@ -52,7 +46,6 @@ public class Match {
 		this.state = TagState.OPEN;
 		this.parent = parent;
 		this.prenumber = prenumber;
-		this.st = s;
 		
 		//inform our parent that we are one of is childs :)
 		if(parent != null) parent.addChild(s, this);
@@ -108,7 +101,32 @@ public class Match {
 	public int prenumber() {
 		return prenumber;
 	}
-	
 
-	
+
+
+	/**
+	 * Generates a String of pre-indices for each query match. 
+	 * Implementation is DFS on each node class.
+	 * 
+	 * @param s
+	 * @param pre
+	 * @return
+	 */
+	public ArrayList<String> sringyfyResults(TPEStack s, String pre) {
+		
+		pre = pre + " - " + prenumber;
+		
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(pre);
+		
+		for(TPEStack st : children.keySet()) {
+			ArrayList<String> newres = new ArrayList<String>();
+			for(Match m : children.get(st)) {
+				for(String x : res) newres.addAll(m.sringyfyResults(st, x));				
+			}
+			res = newres;
+		}
+		
+		return res;
+	}	
 }
