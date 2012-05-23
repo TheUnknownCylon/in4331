@@ -31,7 +31,7 @@ public class Match {
 	/**
 	 * 
 	 */
-	private HashMap<TPEStack, ArrayList<Match>> children = new HashMap<TPEStack, ArrayList<Match>>();
+	private HashMap<TPENode, ArrayList<Match>> children = new HashMap<TPENode, ArrayList<Match>>();
 
 	
 	
@@ -42,7 +42,7 @@ public class Match {
 	 * @param parent
 	 * @param s
 	 */
-	public Match(int prenumber, Match parent, TPEStack s) {
+	public Match(int prenumber, Match parent, TPENode s) {
 		this.state = TagState.OPEN;
 		this.parent = parent;
 		this.prenumber = prenumber;
@@ -60,22 +60,13 @@ public class Match {
 	 * @param s
 	 * @param m
 	 */
-	public void addChild(TPEStack s, Match m) {
+	public void addChild(TPENode s, Match m) {
 		//System.out.println("I ("+st.p()+") as a parent, am informed that I have a child ("+m.st.p()+")");
 		if(!children.containsKey(s)) {
 			children.put(s, new ArrayList<Match>());
 		}
 		children.get(s).add(m);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -90,7 +81,7 @@ public class Match {
 		return parent;
 	}
 	
-	public HashMap<TPEStack, ArrayList<Match>> getChildren() {
+	public HashMap<TPENode, ArrayList<Match>> getChildren() {
 		return children;
 	}
 	
@@ -112,17 +103,17 @@ public class Match {
 	 * @param pre
 	 * @return
 	 */
-	public ArrayList<String> sringyfyResults(TPEStack s, String pre) {
+	public ArrayList<String> sringyfyResults(String pre) {
 		
 		pre = pre + " - " + prenumber;
 		
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(pre);
 		
-		for(TPEStack st : children.keySet()) {
+		for(TPENode st : children.keySet()) {
 			ArrayList<String> newres = new ArrayList<String>();
 			for(Match m : children.get(st)) {
-				for(String x : res) newres.addAll(m.sringyfyResults(st, x));				
+				for(String x : res) newres.addAll(m.sringyfyResults(x));				
 			}
 			res = newres;
 		}

@@ -17,11 +17,11 @@ public class BootStrap {
 	public static void main(String[] args) {
 		//Creating a tree matching the query
 		// This code be improved much :)
-		TPEStack nodeRoot   = new  TPEStack("root");
-		TPEStack nodePerson = new TPEStack("person", nodeRoot);
-		TPEStack nodeEmail  = new TPEStack("email", nodePerson);
-		TPEStack nodeName   = new TPEStack("name", nodePerson);
-		TPEStack nodeLast   = new TPEStack("last", nodeName);
+		TPENode nodeRoot   = new  TPENode("root");
+		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodeEmail  = new TPENode("email", nodePerson);
+		TPENode nodeName   = new TPENode("name", nodePerson);
+		TPENode nodeLast   = new TPENode("last", nodeName);
 		
 		nodeRoot.addChild(nodePerson);
 		nodePerson.addChild(nodeEmail);
@@ -48,8 +48,8 @@ public class BootStrap {
 		
 		//The stacks now should only contain the Match objects that participate
 		// to complete the query.
-		for(Match m : nodePerson.matches) {
-			for(String line : m.sringyfyResults(nodePerson, "")) {
+		for(Match m : nodePerson.stack().matches) {
+			for(String line : m.sringyfyResults("")) {
 				System.out.println(line);
 			}
 		}
