@@ -3,7 +3,11 @@
     <email>m@home</email>
     <name>
       <first>Mary</first>
-      <last>Jones</last>
+      <last>XYZ</last>
+		<last>MMM</last>
+		<pff>
+			<last>f</last>
+		</pff>      
     </name>
   </person>
   

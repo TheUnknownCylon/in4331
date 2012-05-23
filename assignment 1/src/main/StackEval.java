@@ -108,8 +108,9 @@ public class StackEval extends HandlerBase {
 				// has m matches for all children of its pattern node?
 				for(TPENode childnode : node.getChildren()) { 
 					if(m.getChildren().get(childnode) == null) {		
-						//remove m from s
+						//remove m, s
 						nodestack.pop();
+						m.die(node);
 					}
 				}
 				

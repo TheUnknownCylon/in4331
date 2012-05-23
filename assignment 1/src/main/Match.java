@@ -68,9 +68,18 @@ public class Match {
 		children.get(s).add(m);
 	}
 	
+	public void removeChild(TPENode s, Match m) {
+		children.get(s).remove(m);
+		if(children.get(s).size()==0) {
+			children.remove(s);
+		}
+	}
 	
 	
-	
+	public void die(TPENode s) {
+		if(parent()!=null)
+			parent().removeChild(s, this);
+	}
 	
 
 	public TagState getStatus() {
