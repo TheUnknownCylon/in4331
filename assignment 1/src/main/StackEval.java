@@ -49,7 +49,7 @@ public class StackEval extends HandlerBase {
 	
 	/**
 	 * When the StackEval can decide whether a match was found for the TCP-tree,
-	 * the match is added to a resultscollector, and the information is removed
+	 * the match is added to a results-collector, and the information is removed
 	 * from the stacks.
 	 */
 	private ResultsCollector results;
@@ -142,7 +142,7 @@ public class StackEval extends HandlerBase {
 					boolean died = false;
 				
 					for(TPENode childnode : node.getChildren()) {
-						if(m.getChildren().get(childnode) == null) {
+						if(m.getChildren().get(childnode) == null && childnode.isOptional() == false) {
 							m.die(); 						//remove m, s
 							died = true;
 						}

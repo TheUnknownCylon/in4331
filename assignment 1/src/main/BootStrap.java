@@ -20,8 +20,10 @@ public class BootStrap {
 		TPENode nodeRoot   = new  TPENode("root");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
-		TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
-		//TPENode nodeName   = new TPENode("name", nodePerson);
+			    nodeEmail.optional(true);
+			    
+		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
+		TPENode nodeName   = new TPENode("name", nodePerson);
 		TPENode nodeLast   = //new TPENodeStar(nodeName, "* 1");
 							 new TPENode("last", nodeName);
 //		 - 1 - 2 - 3 - 5

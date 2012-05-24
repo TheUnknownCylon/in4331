@@ -29,6 +29,10 @@ public class TPENode {
 	 */
 	private String id;
 	
+	
+	private boolean optinal = false;
+	
+	
 	/**
 	 * Constructor.
 	 * @param name
@@ -91,6 +95,25 @@ public class TPENode {
 	public TPENode parent() {
 		return parent;
 	}
+	
+	
+	/**
+	 * Returns true iff the node is optional, false otherwise.
+	 * @return
+	 */
+	public boolean isOptional() {
+		return optinal;
+	}
+	
+	/**
+	 * Allows the node to be set as optional.
+	 * (Note: not in constructor because too munch parameters will go there.)
+	 * @param optinal
+	 */
+	public void optional(boolean optinal) {
+		this.optinal = optinal;
+	}
+
 	
 	/**
 	 * In case this node has a child, inform it.

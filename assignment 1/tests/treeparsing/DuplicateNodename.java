@@ -5,12 +5,10 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.xml.parsers.SAXParser;
 
 import main.BootStrap;
 import main.Match;
 import main.ResultsCollector;
-import main.StackEval;
 import main.TPENode;
 
 import org.junit.Before;
