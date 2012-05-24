@@ -18,14 +18,26 @@ public class BootStrap {
 		//Creating a tree matching the query
 		// This code be improved much :)
 		TPENode nodeRoot   = new  TPENode("root");
-		TPENode nodePerson = new TPENode("person", nodeRoot);
-		TPENode nodeEmail  = new TPENode("email", nodePerson);
-		TPENode nodeName   = new TPENode("name", nodePerson);
+//		TPENode nodePerson = new TPENode("person", nodeRoot);
+//		TPENode nodeEmail  = new TPENode("email", nodePerson);
+//		TPENode nodeName   = new TPENode("name", nodePerson);
+//		TPENode nodeLast   = new TPENode("last", nodeName);
+//		
+//		nodeRoot.addChild(nodePerson);
+//		nodePerson.addChild(nodeEmail);
+//		nodePerson.addChild(nodeName);
+//		nodeName.addChild(nodeLast);
+//		
+		TPENode nodePerson1 = new TPENode("person", nodeRoot);
+		TPENode nodePerson2 = new TPENode("person", nodePerson1);
+		TPENode phone       = new TPENode("phone", nodePerson2);
+		TPENode nodeName   = new TPENode("name", nodePerson1);
 		TPENode nodeLast   = new TPENode("last", nodeName);
-		
-		nodeRoot.addChild(nodePerson);
-		nodePerson.addChild(nodeEmail);
-		nodePerson.addChild(nodeName);
+
+		nodeRoot.addChild(nodePerson1);
+		nodePerson1.addChild(nodePerson2);
+		nodePerson2.addChild(phone);
+		nodePerson1.addChild(nodeName);
 		nodeName.addChild(nodeLast);
 		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -45,16 +57,6 @@ public class BootStrap {
 		}
 		
 		System.out.println("--- --- --- ---");
-		
-		//The stacks now should only contain the Match objects that participate
-		// to complete the query.
-		for(Match m : nodePerson.stack().matches) {
-			for(String line : m.sringyfyResults("")) {
-				System.out.println(line);
-			}
-		}
-		
-
 
 	}
 

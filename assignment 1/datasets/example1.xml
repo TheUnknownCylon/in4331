@@ -1,29 +1,16 @@
-<people>
-  <person>
-    <email>m@home</email>
-    <name>
-      <first>Mary</first>
-      <last>XYZ</last>
-		<last>MMM</last>
-		<pff>
-			<last>f</last>
-		</pff>      
-    </name>
-  </person>
+<people>  <!-- 0 -->
   
-  <person>
-    <name>
-      <first>Bob</first>
-      <last>Lang</last>
+  <person> <!-- 1 -->
+  	<person> <!-- 2 -->
+  		<phone>112</phone> <!-- 3 -->
+  	</person>
+    <email>12</email> <!-- 4 -->
+    <name> <!-- 5 -->
+      <first>a</first> <!-- 6 -->
+      <last>a</last> <!-- 7 -->
     </name>
   </person>
-
-  <person>
-    <email>a@home</email>
-    <email>a@work</email>
-    <name>
-      <first>Al</first>
-      <last>Hart</last>
-    </name>
-  </person>
+ 
+	  
+  
 </people>

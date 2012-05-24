@@ -34,6 +34,7 @@ public class StackEval extends HandlerBase {
 	 */
 	private Stack<Integer> preOfOpenNodes = new Stack<Integer>();
 	
+	private Stack<String> bla = new Stack<String>();
 	
 	/**
 	 * Constructor of the StackEval.
@@ -42,9 +43,7 @@ public class StackEval extends HandlerBase {
 	public StackEval(TPENode rootNode) {
 		super();
 		this.rootNode = rootNode;
-	}
-	
-	
+	}	
 	
 	@Override
 	/**
@@ -56,7 +55,7 @@ public class StackEval extends HandlerBase {
 			throws SAXException {
 		
 		//System.out.println("Open: "+localName);
-
+		
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack parentstack = node.parent().stack();
 			
@@ -66,8 +65,9 @@ public class StackEval extends HandlerBase {
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
-				if( parentstack.top() == null ||							//there is no node (TODO: own idea: correct??)
+				if( parentstack.top() == null ||						//there is no node (TODO: own idea: correct??)
 					parentstack.top().getStatus() == TagState.OPEN		// or the node is open
+					&& bla.lastElement().equals(node.parent().name())
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
@@ -78,6 +78,7 @@ public class StackEval extends HandlerBase {
 			}
 		}
 		
+		bla.push(localName);
 		preOfOpenNodes.push(currentPre);
 		currentPre++;			
 
@@ -90,27 +91,47 @@ public class StackEval extends HandlerBase {
 		
 		//we need to find out if the element ending now correspond to matches
 		// in some stacks
-
+		bla.pop();
 		// first: get the pre number of the element that ends now
 		int preOfLastOpen = preOfOpenNodes.pop();
+		
+		//System.out.println("GOING TO CLOSE "+preOfLastOpen);
 		
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
 			if( node.name().equals(localName) &&
+					nodestack.top() != null && //HMMM
 					nodestack.top().getStatus() == TagState.OPEN &&
 					nodestack.top().prenumber() == preOfLastOpen
 			) {
 				//we found the corresponding match!
-				// All descendents of this match have been traversed by now.
-				Match m = nodestack.top();
-				
+				// All descendants of this match have been traversed by now.
+				Match m = nodestack.pop();
+
 				//now do the post-check:
 				// has m matches for all children of its pattern node?
-				for(TPENode childnode : node.getChildren()) { 
-					if(m.getChildren().get(childnode) == null) {		
+				// if not, the match is not valid, and should be removed from its parent
+				// (note: all children are valid matches themselves here!)
+				boolean died = false;
+				for(TPENode childnode : node.getChildren()) {
+					//System.out.println(" !! "+ childnode.name());
+					if(m.getChildren().get(childnode) == null) {
 						//remove m, s
-						nodestack.pop();
-						m.die(node);
+						m.die();
+						died = true;
+						System.out.println("m died "+m.prenumber());
+					}
+				}
+				
+				//If we have not died, it means that all our sub-nodes 
+				// are correct. In the case that parent is our root-node,
+				// this match is a solution for the query.
+				// TODO: May renice this somehow (move)
+				// TODO: Verify solution for * in paths, etc. maybe this is the 'wrong' way to do this
+				//       Not looked into that yet.
+				if(died == false && m.tpenode.parent().name().equals("root")) {
+					for(String line : m.sringyfyResults("")) {
+						System.out.println(line);
 					}
 				}
 				

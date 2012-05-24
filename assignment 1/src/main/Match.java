@@ -34,6 +34,8 @@ public class Match {
 	private HashMap<TPENode, ArrayList<Match>> children = new HashMap<TPENode, ArrayList<Match>>();
 
 	
+	public TPENode tpenode;
+	
 	
 	/**
 	 * Constructor.
@@ -42,13 +44,15 @@ public class Match {
 	 * @param parent
 	 * @param s
 	 */
-	public Match(int prenumber, Match parent, TPENode s) {
+	public Match(int prenumber, Match parent, TPENode tpenode) {
 		this.state = TagState.OPEN;
 		this.parent = parent;
 		this.prenumber = prenumber;
 		
+		this.tpenode = tpenode;
+		
 		//inform our parent that we are one of is childs :)
-		if(parent != null) parent.addChild(s, this);
+		if(parent != null) parent.addChild(tpenode, this);
 	}
 
 
@@ -68,17 +72,17 @@ public class Match {
 		children.get(s).add(m);
 	}
 	
-	public void removeChild(TPENode s, Match m) {
-		children.get(s).remove(m);
-		if(children.get(s).size()==0) {
-			children.remove(s);
+	public void removeChild(Match m) {	
+		for(TPENode s : children.keySet()) {
+			children.get(s).remove(m);
+			//TODO: optimization, remove all children with length 0
 		}
 	}
 	
 	
-	public void die(TPENode s) {
+	public void die() {
 		if(parent()!=null)
-			parent().removeChild(s, this);
+			parent().removeChild(this);
 	}
 	
 
