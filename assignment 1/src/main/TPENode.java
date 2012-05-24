@@ -19,12 +19,14 @@ public class TPENode {
 	 */
 	private ArrayList<TPENode> children = new ArrayList<TPENode>();
 	
-	
 	/**
 	 * Keep a stack on which all matches for this node are stored.
 	 */
 	private TPEStack stack = new TPEStack();
 	
+	/**
+	 * Holds an id, useful for debugging.
+	 */
 	private String id;
 	
 	/**
@@ -34,8 +36,7 @@ public class TPENode {
 	public TPENode(String name) {
 		this.name = name;
 	}
-	
-	
+		
 	/**
 	 * Constructor, which allows to set a parent.
 	 * @param name
@@ -45,6 +46,7 @@ public class TPENode {
 		this(name);
 		this.parent = parent;
 	}
+	
 	public TPENode(String name, TPENode parent, String id) {
 		this(name);
 		this.parent = parent;
@@ -58,6 +60,16 @@ public class TPENode {
 	public String name() {
 		return name;
 	}
+	
+	/**
+	 * Returns true iff the node should hold the node.
+	 * @param name
+	 * @return
+	 */
+	public boolean canPush(String name) {
+		return name.equals(this.name);
+	}
+	
 	
 	public String nameid() {
 		if(id==null) id = ""; 

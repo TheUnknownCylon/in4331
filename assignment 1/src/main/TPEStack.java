@@ -10,7 +10,7 @@ import java.util.Stack;
 public class TPEStack {
 
 	/**
-	 * 
+	 * Hold a stack of all matches.
 	 */
 	public Stack<Match> matches = new Stack<Match>();
 
@@ -21,6 +21,16 @@ public class TPEStack {
 	public void push(Match  m) {
 		matches.push(m);
 	}
+	
+	
+	/**
+	 * Pops the top item of the list.
+	 * @return
+	 */
+	public Match pop() {
+		return matches.pop();
+	}
+	
 	
 	/**
 	 * Returns the last element on the stack, without popping it.
@@ -34,7 +44,15 @@ public class TPEStack {
 		}
 	}
 	
-
+	
+	/**
+	 * Returns the first element on the stack for a given depth.
+	 * This functionality is required in case nested nodes are in the query-tree,
+	 * for example one wants to match:
+	 *   <person><person><email>a@b.c</email></person></person>
+	 * @param depth
+	 * @return
+	 */
 	public Match top(int depth) {
 		
 		if(matches.size()>0) for(int i = matches.size()-1; i >= 0; i--) {
@@ -46,10 +64,5 @@ public class TPEStack {
 		
 		return null;
 	}
-	
-	public Match pop() {
-		return matches.pop();
-	}
-	
 
 }

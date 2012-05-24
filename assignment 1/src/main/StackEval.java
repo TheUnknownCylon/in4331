@@ -34,11 +34,26 @@ public class StackEval extends HandlerBase {
 	 */
 	private Stack<Integer> preOfOpenNodes = new Stack<Integer>();
 	
-	private Stack<String> bla = new Stack<String>();
+	/**
+	 * Keep track of all open node names.
+	 */
+	private Stack<String> namesOfOpenNodes = new Stack<String>();
 	
+	
+	/**
+	 * Keep track of the depth of open nodes.
+	 * Alternative: namesOfOpenNodes.size()
+	 */
 	private int depth = 0;
 	
+	
+	/**
+	 * When the StackEval can decide whether a match was found for the TCP-tree,
+	 * the match is added to a resultscollector, and the information is removed
+	 * from the stacks.
+	 */
 	private ResultsCollector results;
+	
 	
 	/**
 	 * Constructor of the StackEval.
@@ -49,6 +64,7 @@ public class StackEval extends HandlerBase {
 		this.rootNode = rootNode;
 		this.results = results;
 	}	
+	
 	
 	@Override
 	/**
@@ -67,14 +83,14 @@ public class StackEval extends HandlerBase {
 			TPEStack parentstack = node.parent().stack();
 			
 			//condition 1
-			if(	node.name().equals(localName)) {
+			if( node.canPush(localName)) {
 				
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
 				if( parentstack.top(depth-1) == null ||						//there is no node (TODO: own idea: correct??)
 					parentstack.top(depth-1).getStatus() == TagState.OPEN		// or the node is open
-					&& bla.lastElement().equals(node.parent().name())
+					//&& bla.lastElement().equals(node.parent().name())
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
@@ -88,7 +104,7 @@ public class StackEval extends HandlerBase {
 			}
 		}
 		
-		bla.push(localName);
+		namesOfOpenNodes.push(localName);
 		preOfOpenNodes.push(currentPre);
 		currentPre++;			
 
@@ -102,7 +118,7 @@ public class StackEval extends HandlerBase {
 		
 		//we need to find out if the element ending now correspond to matches
 		// in some stacks
-		bla.pop();
+		namesOfOpenNodes.pop();
 		// first: get the pre number of the element that ends now
 		int preOfLastOpen = preOfOpenNodes.pop();
 		
@@ -110,36 +126,37 @@ public class StackEval extends HandlerBase {
 		
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
-			if( node.name().equals(localName) &&
-					//nodestack.top() != null && //HMMM
-					nodestack.top().getStatus() == TagState.OPEN &&
+			if( node.canPush(localName)) {
+				if ( //nodestack.top() != null && //HMMM
+					 nodestack.top().getStatus() == TagState.OPEN &&
 					nodestack.top().prenumber() == preOfLastOpen
-			) {
-				//we found the corresponding match!
-				// All descendants of this match have been traversed by now.
-				Match m = nodestack.pop();
+				) {
+					//we found the corresponding match!
+					// All descendants of this match have been traversed by now.
+					Match m = nodestack.pop();
 
-				//now do the post-check:
-				// has m matches for all children of its pattern node?
-				// if not, the match is not valid, and should be removed from its parent
-				// (note: all children are valid matches themselves here!)
-				boolean died = false;
+					//now do the post-check:
+					// has m matches for all children of its pattern node?
+					// if not, the match is not valid, and should be removed from its parent
+					// (note: all children are valid matches themselves here!)
+					boolean died = false;
 				
-				for(TPENode childnode : node.getChildren()) {
-					if(m.getChildren().get(childnode) == null) {
-						m.die(); 						//remove m, s
-						died = true;
+					for(TPENode childnode : node.getChildren()) {
+						if(m.getChildren().get(childnode) == null) {
+							m.die(); 						//remove m, s
+							died = true;
+						}
 					}
-				}
 				
-				//If we have not died, it means that all our sub-nodes 
-				// are correct. In the case that parent is our root-node,
-				// this match is a solution for the query.
-				if(died == false && m.tpenode.parent().name().equals("root")) {
-					results.addMatch(m);
-				}
+					//If we have not died, it means that all our sub-nodes 
+					// are correct. In the case that parent is our root-node,
+					// this match is a solution for the query.
+					if(died == false && m.tpenode.parent().name().equals("root")) {
+						results.addMatch(m);
+					}
 				
-			} //else: ignored
+				} //else: ignored
+			}
 			
 		}
 

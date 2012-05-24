@@ -1,25 +1,25 @@
-<people>
-  <person>
-    <email>m@home</email>
-    <name>
-      <first>Mary</first>
-      <last>Jones</last> 
+<people>						<!-- 0 -->
+  <person>						<!-- 1 -->
+    <email>m@home</email>		<!-- 2 -->
+    <name>						<!-- 3 -->
+      <first>Mary</first>		<!-- 4 -->
+      <last>Jones</last> 		<!-- 5 -->
     </name>
   </person>
   
-  <person>
-    <name>
-      <first>Bob</first>
-      <last>Lang</last>
+  <person>						<!-- 6 -->
+    <name>						<!-- 7 -->
+      <first>Bob</first>		<!-- 8 -->
+      <last>Lang</last>			<!-- 9 -->
     </name>
   </person>
 
-  <person>
-    <email>a@home</email>
-    <email>a@work</email>
-    <name>
-      <first>Al</first>
-      <last>Hart</last>
+  <person>						<!-- 10 -->
+    <email>a@home</email>		<!-- 11 -->
+    <email>a@work</email>		<!-- 12 -->
+    <name>						<!-- 13 -->
+      <first>Al</first>			<!-- 14 -->
+      <last>Hart</last>			<!-- 15 -->
     </name>
   </person>
 </people>
