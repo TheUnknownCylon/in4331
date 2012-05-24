@@ -36,13 +36,18 @@ public class StackEval extends HandlerBase {
 	
 	private Stack<String> bla = new Stack<String>();
 	
+	private int depth = 0;
+	
+	private ResultsCollector results;
+	
 	/**
 	 * Constructor of the StackEval.
 	 * @param rootNode
 	 */
-	public StackEval(TPENode rootNode) {
+	public StackEval(TPENode rootNode, ResultsCollector results) {
 		super();
 		this.rootNode = rootNode;
+		this.results = results;
 	}	
 	
 	@Override
@@ -54,8 +59,10 @@ public class StackEval extends HandlerBase {
 	public void startElement(String localName, AttributeList attributes)
 			throws SAXException {
 		
-		//System.out.println("Open: "+localName);
+		depth ++;
 		
+		int i = 0;
+		//System.out.println("\nOpen: "+localName);
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack parentstack = node.parent().stack();
 			
@@ -65,15 +72,18 @@ public class StackEval extends HandlerBase {
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
-				if( parentstack.top() == null ||						//there is no node (TODO: own idea: correct??)
-					parentstack.top().getStatus() == TagState.OPEN		// or the node is open
+				if( parentstack.top(depth-1) == null ||						//there is no node (TODO: own idea: correct??)
+					parentstack.top(depth-1).getStatus() == TagState.OPEN		// or the node is open
 					&& bla.lastElement().equals(node.parent().name())
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
-					//System.out.println(">> New Match (1): " + localName);
-					Match m = new Match(currentPre, parentstack.top(), node);
+					//System.out.println("");
+					//System.out.println("* "+currentPre+"."+i+":"+node.nameid() +"  pushed on " + node.parent().nameid());
+					Match m = new Match(currentPre, parentstack.top(depth-1), node, depth, i);
+
 					node.stack().push(m);
+					i++;
 				}
 			}
 		}
@@ -87,6 +97,7 @@ public class StackEval extends HandlerBase {
 	
 	@Override
 	public void endElement(String localName) throws SAXException {
+		depth --;
 		//System.out.println(">> Close: "+localName);
 		
 		//we need to find out if the element ending now correspond to matches
@@ -100,7 +111,7 @@ public class StackEval extends HandlerBase {
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
 			if( node.name().equals(localName) &&
-					nodestack.top() != null && //HMMM
+					//nodestack.top() != null && //HMMM
 					nodestack.top().getStatus() == TagState.OPEN &&
 					nodestack.top().prenumber() == preOfLastOpen
 			) {
@@ -113,26 +124,19 @@ public class StackEval extends HandlerBase {
 				// if not, the match is not valid, and should be removed from its parent
 				// (note: all children are valid matches themselves here!)
 				boolean died = false;
+				
 				for(TPENode childnode : node.getChildren()) {
-					//System.out.println(" !! "+ childnode.name());
 					if(m.getChildren().get(childnode) == null) {
-						//remove m, s
-						m.die();
+						m.die(); 						//remove m, s
 						died = true;
-						System.out.println("m died "+m.prenumber());
 					}
 				}
 				
 				//If we have not died, it means that all our sub-nodes 
 				// are correct. In the case that parent is our root-node,
 				// this match is a solution for the query.
-				// TODO: May renice this somehow (move)
-				// TODO: Verify solution for * in paths, etc. maybe this is the 'wrong' way to do this
-				//       Not looked into that yet.
 				if(died == false && m.tpenode.parent().name().equals("root")) {
-					for(String line : m.sringyfyResults("")) {
-						System.out.println(line);
-					}
+					results.addMatch(m);
 				}
 				
 			} //else: ignored

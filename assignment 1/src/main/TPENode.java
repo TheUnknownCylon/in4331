@@ -25,6 +25,8 @@ public class TPENode {
 	 */
 	private TPEStack stack = new TPEStack();
 	
+	private String id;
+	
 	/**
 	 * Constructor.
 	 * @param name
@@ -43,7 +45,11 @@ public class TPENode {
 		this(name);
 		this.parent = parent;
 	}
-	
+	public TPENode(String name, TPENode parent, String id) {
+		this(name);
+		this.parent = parent;
+		this.id = id;
+	}
 	
 	/**
 	 * Returns the node name.
@@ -51,6 +57,11 @@ public class TPENode {
 	 */
 	public String name() {
 		return name;
+	}
+	
+	public String nameid() {
+		if(id==null) id = ""; 
+		return name+"("+id+")";
 	}
 	
 	/**

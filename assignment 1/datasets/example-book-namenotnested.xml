@@ -1,0 +1,19 @@
+<people>
+  <person>
+    <email>m@home</email>
+      <first>Mary</first>
+      <last>Jones</last> 
+  </person>
+  
+  <person>
+      <first>Bob</first>
+      <last>Lang</last>
+  </person>
+
+  <person>
+    <email>a@home</email>
+    <email>a@work</email>
+      <first>Al</first>
+      <last>Hart</last>
+  </person>
+</people>

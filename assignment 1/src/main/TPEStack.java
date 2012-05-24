@@ -34,8 +34,22 @@ public class TPEStack {
 		}
 	}
 	
+
+	public Match top(int depth) {
+		
+		if(matches.size()>0) for(int i = matches.size()-1; i >= 0; i--) {
+			Match m = matches.get(i);
+			if(m.depth == depth) {
+				return m;
+			}
+		}
+		
+		return null;
+	}
+	
 	public Match pop() {
 		return matches.pop();
 	}
+	
 
 }

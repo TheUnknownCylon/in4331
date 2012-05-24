@@ -35,7 +35,9 @@ public class Match {
 
 	
 	public TPENode tpenode;
+	public int depth;
 	
+	private int id;
 	
 	/**
 	 * Constructor.
@@ -44,15 +46,21 @@ public class Match {
 	 * @param parent
 	 * @param s
 	 */
-	public Match(int prenumber, Match parent, TPENode tpenode) {
+	public Match(int prenumber, Match parent, TPENode tpenode, int depth, int id) {
 		this.state = TagState.OPEN;
 		this.parent = parent;
 		this.prenumber = prenumber;
 		
 		this.tpenode = tpenode;
 		
+		this.id = id;
+		this.depth = depth;
+		
 		//inform our parent that we are one of is childs :)
-		if(parent != null) parent.addChild(tpenode, this);
+		if(parent != null) {
+			parent.addChild(tpenode, this);
+			//System.out.println("  > "+parent.name() + " knows us under " + tpenode.nameid());	
+		}
 	}
 
 
@@ -66,10 +74,14 @@ public class Match {
 	 */
 	public void addChild(TPENode s, Match m) {
 		//System.out.println("I ("+st.p()+") as a parent, am informed that I have a child ("+m.st.p()+")");
+		
+		//System.out.println("$ "+prenumber+" adding child: "+m.prenumber);
+		
 		if(!children.containsKey(s)) {
 			children.put(s, new ArrayList<Match>());
 		}
 		children.get(s).add(m);
+	
 	}
 	
 	public void removeChild(Match m) {	
@@ -106,6 +118,9 @@ public class Match {
 		return prenumber;
 	}
 
+	public String name() {
+		return prenumber+"."+id;
+	}
 
 
 	/**
