@@ -33,6 +33,9 @@ public class TPENode {
 	private boolean optinal = false;
 	
 	
+	public boolean resultvalue = false;
+	
+	
 	/**
 	 * Constructor.
 	 * @param name
@@ -147,4 +150,8 @@ public class TPENode {
 		return alldescendants;
 	}
 
+	
+	public String toString() {
+		return name();
+	}
 }

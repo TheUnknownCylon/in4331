@@ -21,25 +21,33 @@ public class BootStrap {
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 			    nodeEmail.optional(true);
+			    nodeEmail.resultvalue = true;
 			    
 		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
 		TPENode nodeName   = new TPENode("name", nodePerson);
 		TPENode nodeLast   = //new TPENodeStar(nodeName, "* 1");
 							 new TPENode("last", nodeName);
-//		 - 1 - 2 - 3 - 5
-//		 - 10 - 11 - 13 - 15
-//		 - 10 - 12 - 13 - 15
+		nodeLast.resultvalue = true;
+		
+		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
+		//TPENode nodeName2   = new TPENode("name", nodePerson);
+		//TPENode nodeLast2   = //new TPENodeStar(nodeName, "* 1");
+		//					 new TPENode("last", nodeName2);
 
 		
 		nodeRoot.addChild(nodePerson);
 		nodePerson.addChild(nodeEmail);
 		nodePerson.addChild(nodeName);
+		//nodePerson.addChild(nodeName2);
 		nodeName.addChild(nodeLast);
+		//nodeName.addChild(nodeLast2);
 		
 		ResultsCollector collection = new ResultsCollector();
 
 		BootStrap.parse(f, nodeRoot, collection);
+		collection.printResultsPre();
 		collection.printResults();
+		
 
 		
 
@@ -53,7 +61,7 @@ public class BootStrap {
 			ResultsCollector results = new ResultsCollector();
 			
 	        saxParser.parse( f, new StackEval(root, rcol) );
-	        results.printResults();
+	        results.printResultsPre();
 
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();

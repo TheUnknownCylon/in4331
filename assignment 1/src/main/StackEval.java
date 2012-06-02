@@ -159,9 +159,13 @@ public class StackEval extends HandlerBase {
 			}
 			
 		}
-
-
 	}
+	
+//	@Override
+//	public void characters(char[] ch, int start, int length) {
+//		String value = new String(ch).substring(start, start+length);
+//	}
+	
 }
 
 ////similarly look for query nodes possibly matched by the attributes

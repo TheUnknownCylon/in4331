@@ -38,7 +38,7 @@ public class Match {
 	public int depth;
 	
 	private int id;
-	
+		
 	/**
 	 * Constructor.
 	 * 
@@ -131,7 +131,7 @@ public class Match {
 	 * @param pre
 	 * @return
 	 */
-	public ArrayList<String> sringyfyResults(String pre) {
+	public ArrayList<String> allPrestoString(String pre) {
 		
 		pre = pre + " - " + prenumber;
 		
@@ -141,11 +141,38 @@ public class Match {
 		for(TPENode st : children.keySet()) {
 			ArrayList<String> newres = new ArrayList<String>();
 			for(Match m : children.get(st)) {
-				for(String x : res) newres.addAll(m.sringyfyResults(x));				
+				for(String x : res) newres.addAll(m.allPrestoString(x));				
 			}
 			res = newres;
 		}
 		
 		return res;
-	}	
+	}
+	
+	/**
+	 * 
+	 * @param s
+	 * @param pre
+	 * @return
+	 */
+	public ArrayList<HashMap<TPENode, Integer>> mapResults(HashMap<TPENode, Integer> pre) {
+		
+		if(tpenode.resultvalue == true) {
+			pre.put(tpenode, prenumber);
+		}
+		
+		ArrayList<HashMap<TPENode, Integer>> res = new ArrayList<HashMap<TPENode, Integer>>();
+		res.add(pre);
+		
+		for(TPENode st : children.keySet()) {
+			ArrayList<HashMap<TPENode, Integer>> newres = new ArrayList<HashMap<TPENode, Integer>>();
+			for(Match m : children.get(st)) {
+				for(HashMap<TPENode, Integer> x : res) newres.addAll(m.mapResults(x));				
+			}
+			res = newres;
+		}
+		
+		return res;
+	}
+	
 }
