@@ -168,7 +168,12 @@ public class Match {
 		for(TPENode st : children.keySet()) {
 			ArrayList<HashMap<TPENode, Match>> newres = new ArrayList<HashMap<TPENode, Match>>();
 			for(Match m : children.get(st)) {
-				for(HashMap<TPENode, Match> x : res) newres.addAll(m.mapResults(x));				
+				for(HashMap<TPENode, Match> x : res) {
+					//clone, otherwise results will be overwritten
+					@SuppressWarnings("unchecked")
+					HashMap<TPENode, Match> clone = (HashMap<TPENode, Match>) x.clone();
+					newres.addAll(m.mapResults(clone));				
+				}
 			}
 			res = newres;
 		}
@@ -177,7 +182,7 @@ public class Match {
 	}
 
 
-
+	
 	/**
 	 * 
 	 * @param text
