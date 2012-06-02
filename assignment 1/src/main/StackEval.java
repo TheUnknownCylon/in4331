@@ -40,10 +40,12 @@ public class StackEval implements ContentHandler {
 	
 	
 	/**
-	 * Keep track of the depth of open nodes.
-	 * Alternative: namesOfOpenNodes.size()
+	 * Returns the depth of open nodes.
+	 * @return
 	 */
-	private int depth = 0;
+	private int depth() {
+		return namesOfOpenNodes.size();
+	}
 	
 	
 	/**
@@ -73,10 +75,8 @@ public class StackEval implements ContentHandler {
 	public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
 		throws SAXException {
 		
-		depth ++;
-		
 		int i = 0;
-		//System.out.println("\nOpen: "+localName);
+		
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack parentstack = node.parent().stack();
 			
@@ -86,15 +86,15 @@ public class StackEval implements ContentHandler {
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
-				if( parentstack.top(depth-1) == null ||						//there is no node (TODO: own idea: correct??)
-					parentstack.top(depth-1).getStatus() == TagState.OPEN		// or the node is open
+				if( parentstack.top(depth()-1) == null ||						//there is no node (TODO: own idea: correct??)
+					parentstack.top(depth()-1).getStatus() == TagState.OPEN		// or the node is open
 					//&& bla.lastElement().equals(node.parent().name())
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
 					//System.out.println("");
 					//System.out.println("* "+currentPre+"."+i+":"+node.nameid() +"  pushed on " + node.parent().nameid());
-					Match m = new Match(currentPre, parentstack.top(depth-1), node, depth, i);
+					Match m = new Match(currentPre, parentstack.top(depth()-1), node, depth(), i);
 
 					node.stack().push(m);
 					i++;
@@ -111,18 +111,13 @@ public class StackEval implements ContentHandler {
 	
 	public void endElement(String namespaceURI, String localName, String qName)
 		throws SAXException {
-		
-		depth --;
-		//System.out.println(">> Close: "+localName);
-		
+
 		//we need to find out if the element ending now correspond to matches
 		// in some stacks
 		namesOfOpenNodes.pop();
 		// first: get the pre number of the element that ends now
 		int preOfLastOpen = preOfOpenNodes.pop();
-		
-		//System.out.println("GOING TO CLOSE "+preOfLastOpen);
-		
+				
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
 			if( node.canPush(localName)) {
