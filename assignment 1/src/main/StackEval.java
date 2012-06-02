@@ -34,9 +34,8 @@ public class StackEval implements ContentHandler {
 	
 	
 	/**
-	 * We need to push values to all open matches, and we need to know the
-	 * depth of the query. Therefore store for each open node a Match, or when
-	 * there is no match, a NULL on this stack.
+	 * We need to push values to all open matches. Therefore store for each open
+	 * node a Match.
 	 */
 	private Stack<Match> allOpenMatches = new Stack<Match>();
 		
@@ -58,6 +57,12 @@ public class StackEval implements ContentHandler {
 		this.results = results;
 	}	
 	
+	/**
+	 * The algorithm implementation needs to be aware of the depth of the
+	 * current node. This information is kept in this depth variable.
+	 */
+	private int depth;
+	
 	
 	/**
 	 * When a node nd in a document d is found to satisfy the ancestor
@@ -69,6 +74,7 @@ public class StackEval implements ContentHandler {
 
 		int i = 0;
 		Match m = null;
+		depth++;
 		
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack parentstack = node.parent().stack();
@@ -85,7 +91,8 @@ public class StackEval implements ContentHandler {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
 					m = new Match(currentPre, parentstack.top(depth()-1), node, depth(), i);
-
+					allOpenMatches.push(m);
+					
 					node.stack().push(m);
 					i++;
 				}
@@ -93,7 +100,7 @@ public class StackEval implements ContentHandler {
 		}
 		addTextToOpenMatches("<"+localName+">");
 		
-		allOpenMatches.push(m);
+		
 		preOfOpenNodes.push(currentPre);
 		currentPre++;			
 
@@ -101,8 +108,7 @@ public class StackEval implements ContentHandler {
 	
 	
 	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
-
-		allOpenMatches.pop();
+		depth--;
 		addTextToOpenMatches("</"+localName+">");
 		
 		//we need to find out if the element ending now correspond to matches
@@ -120,6 +126,7 @@ public class StackEval implements ContentHandler {
 					//we found the corresponding match!
 					// All descendants of this match have been traversed by now.
 					Match m = nodestack.pop();
+					allOpenMatches.pop();
 
 					//now do the post-check:
 					// has m matches for all children of its pattern node?
@@ -165,15 +172,14 @@ public class StackEval implements ContentHandler {
 	 * @return
 	 */
 	private int depth() {
-		return allOpenMatches.size();
+		//return allOpenMatches.size();
+		return depth;
 	}
 	
 
 	private void addTextToOpenMatches(String text) {
 		for(Match m : allOpenMatches) {
-			if(m != null) {
-				m.appendText(text);
-			}
+			m.appendText(text);
 		}
 	}
 	

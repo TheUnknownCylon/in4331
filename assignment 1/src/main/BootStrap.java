@@ -15,6 +15,7 @@ public class BootStrap {
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SAXException, IOException {
 		String f = new String("datasets/example-book.xml");
 
