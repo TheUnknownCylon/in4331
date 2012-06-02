@@ -1,21 +1,22 @@
 package main;
 
-import java.io.File;
 import java.io.IOException;
 
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.xml.parsers.SAXParserFactory; 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 
 public class BootStrap {
 
 	/**
 	 * @param args
+	 * @throws IOException 
+	 * @throws SAXException 
 	 */
-	public static void main(String[] args) {
-		File f = new File("datasets/example-book.xml");
+	public static void main(String[] args) throws SAXException, IOException {
+		String f = new String("datasets/example-book.xml");
 
 		TPENode nodeRoot   = new  TPENode("root");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
@@ -45,7 +46,7 @@ public class BootStrap {
 		ResultsCollector collection = new ResultsCollector();
 
 		BootStrap.parse(f, nodeRoot, collection);
-		collection.printResultsPre();
+		//collection.printResultsPre();
 		collection.printResults();
 		
 
@@ -53,26 +54,11 @@ public class BootStrap {
 
 	}
 	
-	public static void parse(File f, TPENode root, ResultsCollector rcol) {
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-
-		try {
-			SAXParser saxParser = factory.newSAXParser();
-			ResultsCollector results = new ResultsCollector();
-			
-	        saxParser.parse( f, new StackEval(root, rcol) );
-	        results.printResultsPre();
-
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-			
-		} catch (SAXException e) {
-			e.printStackTrace();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+	public static void parse(String f, TPENode root, ResultsCollector resultscollector) throws SAXException, IOException {		
+		XMLReader parser = XMLReaderFactory.createXMLReader();
+		ContentHandler contentHandler = new StackEval(root, resultscollector);
+		parser.setContentHandler(contentHandler);
+		parser.parse(f);
 	}
 
 }

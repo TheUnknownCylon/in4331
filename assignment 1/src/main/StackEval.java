@@ -2,8 +2,10 @@ package main;
 
 import java.util.Stack;
 
-import org.xml.sax.AttributeList;
-import org.xml.sax.HandlerBase;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 /**
@@ -13,12 +15,9 @@ import org.xml.sax.SAXException;
  * 
  * Node that the class which is extended is is deprecated.
  * It is used because the assignment says it should be used.
- * 
- * TODO Ask what is preferred: using this deprecated stuff or refactor it.
  *
  */
-@SuppressWarnings("deprecation")
-public class StackEval extends HandlerBase {
+public class StackEval implements ContentHandler {
 	/**
 	 * Root of query TCP-tree
 	 */
@@ -66,14 +65,13 @@ public class StackEval extends HandlerBase {
 	}	
 	
 	
-	@Override
 	/**
 	 * When a node nd in a document d is found to satisfy the ancestor
 	 * conditions related to node nt in t, a match object is created to record
 	 * this information.
 	 */
-	public void startElement(String localName, AttributeList attributes)
-			throws SAXException {
+	public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
+		throws SAXException {
 		
 		depth ++;
 		
@@ -111,8 +109,9 @@ public class StackEval extends HandlerBase {
 	}
 	
 	
-	@Override
-	public void endElement(String localName) throws SAXException {
+	public void endElement(String namespaceURI, String localName, String qName)
+		throws SAXException {
+		
 		depth --;
 		//System.out.println(">> Close: "+localName);
 		
@@ -160,27 +159,17 @@ public class StackEval extends HandlerBase {
 			
 		}
 	}
-	
-//	@Override
-//	public void characters(char[] ch, int start, int length) {
-//		String value = new String(ch).substring(start, start+length);
-//	}
+
+	// do nothing methods  
+	public void setDocumentLocator(Locator locator) {}
+	public void startDocument() throws SAXException {}
+	public void endDocument() throws SAXException {}
+	public void startPrefixMapping(String prefix, String uri) throws SAXException {}
+	public void endPrefixMapping(String prefix) throws SAXException {}
+	public void skippedEntity(String name) throws SAXException {}  
+	public void ignorableWhitespace(char[] text, int start, int length) throws SAXException {}
+	public void processingInstruction(String target, String data) throws SAXException {}
+
+	public void characters(char[] ch, int start, int length) throws SAXException {}
 	
 }
-
-////similarly look for query nodes possibly matched by the attributes
-//// of the currently started element
-//for(int aindex = 0; aindex < attributes.getLength(); aindex++) {
-//	System.out.println(".");
-//	String aname = attributes.getName(aindex);
-//	
-//	for(TPEStack s : rootStack.getDescendentStacks()) {
-//		if(aname.equals(s.p().name) && s.spar().top().getStatus() == TagState.OPEN) {
-//			System.out.println("New Match (2)!");
-//			Match ma = new Match(currentPre, s.spar().top(), s);
-//			s.push(ma);
-//		}
-//	}
-//	
-//	currentPre++;
-//}
