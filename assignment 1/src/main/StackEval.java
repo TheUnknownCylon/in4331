@@ -155,7 +155,10 @@ public class StackEval implements ContentHandler {
 	    addTextToOpenMatches(buffer.toString());
 	}
 
-	
+	public void ignorableWhitespace(char[] text, int start, int length) throws SAXException {
+		characters(text, start, length);
+	}
+
 	
 	/**
 	 * Returns the depth of open nodes.
@@ -184,7 +187,6 @@ public class StackEval implements ContentHandler {
 	public void startPrefixMapping(String prefix, String uri) throws SAXException {}
 	public void endPrefixMapping(String prefix) throws SAXException {}
 	public void skippedEntity(String name) throws SAXException {}  
-	public void ignorableWhitespace(char[] text, int start, int length) throws SAXException {}
 	public void processingInstruction(String target, String data) throws SAXException {}
 
 	

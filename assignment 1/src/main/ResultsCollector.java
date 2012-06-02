@@ -51,6 +51,7 @@ public class ResultsCollector {
 	 */
 	public void printResultsPres() {
 		for(HashMap<TPENode, Match> result : getResultMatches()) {
+			
 			HashMap<TPENode, Integer> r = new HashMap<TPENode, Integer>();
 			for(TPENode noderesult : result.keySet()) {
 				if(result.get(noderesult) != null)
@@ -99,7 +100,7 @@ public class ResultsCollector {
 		// the real values will be set later if possible.
 		HashMap<TPENode, Match> resultsmap = new HashMap<TPENode, Match>();
 		for(TPENode node : nodes) {
-			if(node.resultvalue) {
+			if(node.resultvalue == true) {
 				resultsmap.put(node, null);
 			}
 		}
