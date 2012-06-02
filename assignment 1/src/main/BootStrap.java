@@ -20,15 +20,17 @@ public class BootStrap {
 
 		TPENode nodeRoot   = new  TPENode("root");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
+				nodePerson.resultvalue = true;
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 			    nodeEmail.optional(true);
 			    nodeEmail.resultvalue = true;
 			    
 		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
 		TPENode nodeName   = new TPENode("name", nodePerson);
+				//nodeName.resultvalue = true;
 		TPENode nodeLast   = //new TPENodeStar(nodeName, "* 1");
 							 new TPENode("last", nodeName);
-		nodeLast.resultvalue = true;
+				//nodeLast.resultvalue = true;
 		
 		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
 		//TPENode nodeName2   = new TPENode("name", nodePerson);
@@ -46,11 +48,8 @@ public class BootStrap {
 		ResultsCollector collection = new ResultsCollector();
 
 		BootStrap.parse(f, nodeRoot, collection);
-		//collection.printResultsPre();
-		collection.printResults();
-		
-
-		
+		collection.printResultsPres();
+		collection.printResultsStrings();
 
 	}
 	

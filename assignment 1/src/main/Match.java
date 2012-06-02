@@ -38,6 +38,7 @@ public class Match {
 	public int depth;
 	
 	private int id;
+	private StringBuffer value = new StringBuffer();
 		
 	/**
 	 * Constructor.
@@ -155,24 +156,38 @@ public class Match {
 	 * @param pre
 	 * @return
 	 */
-	public ArrayList<HashMap<TPENode, Integer>> mapResults(HashMap<TPENode, Integer> pre) {
+	public ArrayList<HashMap<TPENode, Match>> mapResults(HashMap<TPENode, Match> pre) {
 		
 		if(tpenode.resultvalue == true) {
-			pre.put(tpenode, prenumber);
+			pre.put(tpenode, this);
 		}
 		
-		ArrayList<HashMap<TPENode, Integer>> res = new ArrayList<HashMap<TPENode, Integer>>();
+		ArrayList<HashMap<TPENode, Match>> res = new ArrayList<HashMap<TPENode, Match>>();
 		res.add(pre);
 		
 		for(TPENode st : children.keySet()) {
-			ArrayList<HashMap<TPENode, Integer>> newres = new ArrayList<HashMap<TPENode, Integer>>();
+			ArrayList<HashMap<TPENode, Match>> newres = new ArrayList<HashMap<TPENode, Match>>();
 			for(Match m : children.get(st)) {
-				for(HashMap<TPENode, Integer> x : res) newres.addAll(m.mapResults(x));				
+				for(HashMap<TPENode, Match> x : res) newres.addAll(m.mapResults(x));				
 			}
 			res = newres;
 		}
 		
 		return res;
+	}
+
+
+
+	/**
+	 * 
+	 * @param text
+	 */
+	public void appendText(String text) {
+		value.append(text);		
+	}
+	
+	public String toString() {
+		return value.toString();
 	}
 	
 }

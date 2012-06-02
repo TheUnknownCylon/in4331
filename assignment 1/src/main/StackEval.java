@@ -2,7 +2,6 @@ package main;
 
 import java.util.Stack;
 
-
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -33,21 +32,14 @@ public class StackEval implements ContentHandler {
 	 */
 	private Stack<Integer> preOfOpenNodes = new Stack<Integer>();
 	
-	/**
-	 * Keep track of all open node names.
-	 */
-	private Stack<String> namesOfOpenNodes = new Stack<String>();
-	
 	
 	/**
-	 * Returns the depth of open nodes.
-	 * @return
+	 * We need to push values to all open matches, and we need to know the
+	 * depth of the query. Therefore store for each open node a Match, or when
+	 * there is no match, a NULL on this stack.
 	 */
-	private int depth() {
-		return namesOfOpenNodes.size();
-	}
-	
-	
+	private Stack<Match> allOpenMatches = new Stack<Match>();
+		
 	/**
 	 * When the StackEval can decide whether a match was found for the TCP-tree,
 	 * the match is added to a results-collector, and the information is removed
@@ -74,8 +66,9 @@ public class StackEval implements ContentHandler {
 	 */
 	public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
 		throws SAXException {
-		
+
 		int i = 0;
+		Match m = null;
 		
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack parentstack = node.parent().stack();
@@ -86,35 +79,34 @@ public class StackEval implements ContentHandler {
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
-				if( parentstack.top(depth()-1) == null ||						//there is no node (TODO: own idea: correct??)
-					parentstack.top(depth()-1).getStatus() == TagState.OPEN		// or the node is open
-					//&& bla.lastElement().equals(node.parent().name())
+				if( parentstack.top(depth()-1) == null ||
+					parentstack.top(depth()-1).getStatus() == TagState.OPEN
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
-					//System.out.println("");
-					//System.out.println("* "+currentPre+"."+i+":"+node.nameid() +"  pushed on " + node.parent().nameid());
-					Match m = new Match(currentPre, parentstack.top(depth()-1), node, depth(), i);
+					m = new Match(currentPre, parentstack.top(depth()-1), node, depth(), i);
 
 					node.stack().push(m);
 					i++;
 				}
 			}
 		}
+		addTextToOpenMatches("<"+localName+">");
 		
-		namesOfOpenNodes.push(localName);
+		allOpenMatches.push(m);
 		preOfOpenNodes.push(currentPre);
 		currentPre++;			
 
 	}
 	
 	
-	public void endElement(String namespaceURI, String localName, String qName)
-		throws SAXException {
+	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
 
+		allOpenMatches.pop();
+		addTextToOpenMatches("</"+localName+">");
+		
 		//we need to find out if the element ending now correspond to matches
 		// in some stacks
-		namesOfOpenNodes.pop();
 		// first: get the pre number of the element that ends now
 		int preOfLastOpen = preOfOpenNodes.pop();
 				
@@ -154,8 +146,38 @@ public class StackEval implements ContentHandler {
 			
 		}
 	}
+	
+	
+	
+	public void characters(char[] text, int start, int length) throws SAXException {
+	    StringBuffer buffer = new StringBuffer();
+	    buffer.append(text, start, length);
+	    addTextToOpenMatches(buffer.toString());
+	}
 
-	// do nothing methods  
+	
+	
+	/**
+	 * Returns the depth of open nodes.
+	 * @return
+	 */
+	private int depth() {
+		return allOpenMatches.size();
+	}
+	
+
+	private void addTextToOpenMatches(String text) {
+		for(Match m : allOpenMatches) {
+			if(m != null) {
+				m.appendText(text);
+			}
+		}
+	}
+	
+	
+	
+	// The following methods are fired by the SAX reader, but we are not
+	//  going to use them.
 	public void setDocumentLocator(Locator locator) {}
 	public void startDocument() throws SAXException {}
 	public void endDocument() throws SAXException {}
@@ -165,6 +187,5 @@ public class StackEval implements ContentHandler {
 	public void ignorableWhitespace(char[] text, int start, int length) throws SAXException {}
 	public void processingInstruction(String target, String data) throws SAXException {}
 
-	public void characters(char[] ch, int start, int length) throws SAXException {}
 	
 }
