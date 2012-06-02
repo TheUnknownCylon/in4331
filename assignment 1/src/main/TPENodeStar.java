@@ -11,8 +11,8 @@ public class TPENodeStar extends TPENode {
 	 * @param parent
 	 * @param id
 	 */
-	public TPENodeStar(TPENode parent, String id) {
-		super("*", parent, id); //* is not needed actually.
+	public TPENodeStar(TPENode parent) {
+		super("*", parent); //* is not needed actually.
 	}
 	
 	@Override

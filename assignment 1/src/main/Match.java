@@ -182,15 +182,17 @@ public class Match {
 	}
 
 
-	
 	/**
-	 * 
+	 * Some text has to be added to the string value for this match.
 	 * @param text
 	 */
 	public void appendText(String text) {
 		value.append(text);		
 	}
 	
+	/**
+	 * Returns the String value of the match.
+	 */
 	public String toString() {
 		return value.toString();
 	}
