@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class ResultsCollector {
 	private ArrayList<Match> results = new ArrayList<Match>();
@@ -81,6 +82,11 @@ public class ResultsCollector {
 				myresults.add(line);
 			}
 		}
+		
+		//remove all duplicates (let's see if this is possible)
+		HashSet<HashMap<TPENode, Match>> x = new HashSet<HashMap<TPENode, Match>>(myresults);
+		myresults.clear();
+		myresults.addAll(x);
 		
 		return myresults;
 	}
