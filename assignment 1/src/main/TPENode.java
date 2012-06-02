@@ -52,12 +52,11 @@ public class TPENode {
 	public TPENode(String name, TPENode parent) {
 		this(name);
 		this.parent = parent;
+		parent.addChild(this);
 	}
 	
 	public TPENode(String name, TPENode parent, String id) {
-		this(name);
-		this.parent = parent;
-		this.id = id;
+		this(name, parent);
 	}
 	
 	/**

@@ -38,13 +38,6 @@ public class BootStrap {
 		//					 new TPENode("last", nodeName2);
 
 		
-		nodeRoot.addChild(nodePerson);
-		nodePerson.addChild(nodeEmail);
-		nodePerson.addChild(nodeName);
-		//nodePerson.addChild(nodeName2);
-		nodeName.addChild(nodeLast);
-		//nodeName.addChild(nodeLast2);
-		
 		ResultsCollector collection = new ResultsCollector();
 
 		BootStrap.parse(f, nodeRoot, collection);
