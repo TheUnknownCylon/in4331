@@ -25,14 +25,24 @@ public class TPENode {
 	private TPEStack stack = new TPEStack();
 	
 	/**
-	 * Holds an id, useful for debugging.
+	 * Set true if this node is optional
 	 */
-	private String id;
-	
-	
 	private boolean optinal = false;
 	
 	
+	/**
+	 * We can have predicates, for which each match should follow this.
+	 * For now we have only one simple predicate: data() == VALUE.
+	 * Each stored predicate is in the list and operates as an AND.
+	 * 
+	 * TODO: AND makes no sense for String values here, but other kinds can
+	 * 		 be added later, such as numeric checks etc.
+	 */
+	private ArrayList<String> predicates = new ArrayList<String>();
+	
+	/**
+	 * Set to true if the value of this node is in the result list.
+	 */
 	public boolean resultvalue = false;
 	
 	
@@ -54,18 +64,29 @@ public class TPENode {
 		this.parent = parent;
 		parent.addChild(this);
 	}
-	
-	public TPENode(String name, TPENode parent, String id) {
-		this(name, parent);
-	}
+
 	
 	/**
 	 * Returns the node name.
 	 * @return
 	 */
 	public String name() {
+		if(parent != null) {
+			return parent.name() + "/" + name;
+		} else {
+			return name;
+		}
+	}
+	
+	
+	/**
+	 * Returns only the node name, without parents appended to it.
+	 * @return
+	 */
+	public String ownname() {
 		return name;
 	}
+	
 	
 	/**
 	 * Returns true iff the node should hold the node.
@@ -76,11 +97,7 @@ public class TPENode {
 		return name.equals(this.name);
 	}
 	
-	
-	public String nameid() {
-		if(id==null) id = ""; 
-		return name+"("+id+")";
-	}
+
 	
 	/**
 	 * Returns the stack of matches for this node.
@@ -133,6 +150,31 @@ public class TPENode {
 		return children;
 	}
 	
+	
+	/**
+	 * Returns true iff a match should be compared agains some predicates.
+	 * @return
+	 */
+	public boolean hasPredicates() {
+		return predicates.size() > 0;
+	}
+	
+	/**
+	 * Returns the first predicate string.
+	 * @return
+	 */
+	public String getPredicate() {
+		return predicates.get(0);
+	}
+	
+	
+	/**
+	 * Add a predicate to this node.
+	 */
+	public void addPredicate(String value) {
+		predicates.add(value);
+	}
+	
 	/**
 	 * Gets the stacks for all descendants of p.
 	 * @TODO In case only the root children are needed, adjust this code!!
@@ -148,8 +190,9 @@ public class TPENode {
 		
 		return alldescendants;
 	}
-
 	
+	
+	@Override
 	public String toString() {
 		return name();
 	}

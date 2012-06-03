@@ -119,28 +119,37 @@ public class StackEval implements ContentHandler {
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
 			if( node.canPush(localName)) {
-				if ( //nodestack.top() != null && //HMMM
-					 nodestack.top().getStatus() == TagState.OPEN &&
-					nodestack.top().prenumber() == preOfLastOpen
+				if ( nodestack.top().getStatus() == TagState.OPEN &&
+					 nodestack.top().prenumber() == preOfLastOpen
 				) {
-					//we found the corresponding match!
+					//we found a corresponding match!
 					// All descendants of this match have been traversed by now.
 					Match m = nodestack.pop();
 					allOpenMatches.pop();
 
-					//now do the post-check:
-					// has m matches for all children of its pattern node?
-					// if not, the match is not valid, and should be removed from its parent
-					// (note: all children are valid matches themselves here!)
+					//now do the post-check, if it fails, the node dies and is ignored:
+					// two checks have to pass:
+					// 1. The match holds its node predicate
+					//
+					// 2. Has m matches for all children of its pattern node?
+					//    if not, the match is not valid, and should be removed from its parent
+					//    (note: all children are valid matches themselves here!)
 					boolean died = false;
-				
+					
+					if(!checkPredicate(m)) {
+						died = true;
+					}
+					
 					for(TPENode childnode : node.getChildren()) {
 						if(m.getChildren().get(childnode) == null && childnode.isOptional() == false) {
-							m.die(); 						//remove m, s
 							died = true;
 						}
 					}
 				
+					if(died == true) {
+						m.die(); // remove m, s
+					}
+					
 					//If we have not died, it means that all our sub-nodes 
 					// are correct. In the case that parent is our root-node,
 					// this match is a solution for the query.
@@ -155,15 +164,14 @@ public class StackEval implements ContentHandler {
 	}
 	
 	
-	
+	/**
+	 * The SAX parser has found characters, which we are going to add
+	 * to all open matches, as the data are match content.
+	 */
 	public void characters(char[] text, int start, int length) throws SAXException {
 	    StringBuffer buffer = new StringBuffer();
 	    buffer.append(text, start, length);
 	    addTextToOpenMatches(buffer.toString());
-	}
-
-	public void ignorableWhitespace(char[] text, int start, int length) throws SAXException {
-		characters(text, start, length);
 	}
 
 	
@@ -176,11 +184,27 @@ public class StackEval implements ContentHandler {
 		return depth;
 	}
 	
-
+	/**
+	 * Add text to all open matches as match-data.
+	 * @param text
+	 */
 	private void addTextToOpenMatches(String text) {
 		for(Match m : allOpenMatches) {
 			m.appendText(text);
 		}
+	}
+	
+	/**
+	 * Checks whether m holds it predicates.
+	 * @param m
+	 * @return
+	 */
+	private boolean checkPredicate(Match m) {
+		TPENode n = m.tpenode;
+		if(!n.hasPredicates()) {
+			return true;
+		}
+		return n.getPredicate().equals(m.data());
 	}
 	
 	
@@ -194,6 +218,6 @@ public class StackEval implements ContentHandler {
 	public void endPrefixMapping(String prefix) throws SAXException {}
 	public void skippedEntity(String name) throws SAXException {}  
 	public void processingInstruction(String target, String data) throws SAXException {}
-
+	public void ignorableWhitespace(char[] text, int start, int length) throws SAXException {}
 	
 }

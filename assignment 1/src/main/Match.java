@@ -190,11 +190,25 @@ public class Match {
 		value.append(text);		
 	}
 	
+	
+	/**
+	 * Returns the data contained in this Match. This is (at least in my implemenatation):
+	 *  all text within the node, without the nodes open and close tags.
+	 * @return
+	 */
+	public String data() {
+		String v = value.toString();
+		return v.substring(v.indexOf(">")+1, v.lastIndexOf("<"));
+	}
+	
 	/**
 	 * Returns the String value of the match.
 	 */
 	public String toString() {
 		return value.toString();
 	}
+
+	
+
 	
 }

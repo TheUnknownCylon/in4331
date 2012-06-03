@@ -67,6 +67,99 @@ public class bookQueries {
 		assertTrue(expectedresults.hasCorrectMapping(matches));
 	}
 	
+	@Test
+	/**
+	 * Same test as previous, only now we set a predicate on the email value.
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public void bookExamplePredicate() throws SAXException, IOException {
+		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodeEmail  = new TPENode("email", nodePerson);
+		TPENode nodeName   = new TPENode("name", nodePerson);
+		TPENode nodeLast   = new TPENode("last", nodeName);
+		
+		nodeEmail.resultvalue = true;
+		nodeEmail.addPredicate("m@home");
+		nodeLast.resultvalue = true;
+
+		ResultsCollector results = getResults(filename, nodeRoot);
+
+		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
+		assertTrue(matches.size() == 1);
+		
+		TestResultsMap expectedresults = new TestResultsMap(1);
+		expectedresults.put(0, nodeEmail, "<email>m@home</email>");
+		expectedresults.put(0, nodeLast, "<last>Jones</last>");
+
+		assertTrue(expectedresults.hasCorrectMapping(matches));
+	}
+	
+	@Test
+	/**
+	 * Same test as previous, only now we set a predicate on the last name value.
+	 * Multiple email address are in this sub node, check if we get them all.
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public void bookExamplePredicate2() throws SAXException, IOException {
+		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodeEmail  = new TPENode("email", nodePerson);
+		TPENode nodeName   = new TPENode("name", nodePerson);
+		TPENode nodeLast   = new TPENode("last", nodeName);
+		
+		nodeEmail.resultvalue = true;
+		nodeLast.resultvalue = true;
+		nodeLast.addPredicate("Hart");
+
+		ResultsCollector results = getResults(filename, nodeRoot);
+
+		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
+		assertTrue(matches.size() == 2);
+		
+		TestResultsMap expectedresults = new TestResultsMap(2);
+		expectedresults.put(0, nodeEmail, "<email>a@home</email>");
+		expectedresults.put(0, nodeLast, "<last>Hart</last>");
+
+		expectedresults.put(1, nodeEmail, "<email>a@work</email>");
+		expectedresults.put(1, nodeLast, "<last>Hart</last>");
+
+		assertTrue(expectedresults.hasCorrectMapping(matches));
+	}
+	
+	
+	@Test
+	/**
+	 * First test query example from the book.
+	 * No optional values, no null values.
+	 * 
+	 * Using an example file where the name is not encapsulated in 
+	 *   <name>  </name>
+	 * Therefore no results are expected to be returned.
+	 * 
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public void bookExampleNameNotNested() throws SAXException, IOException {
+		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodeEmail  = new TPENode("email", nodePerson);
+		TPENode nodeName   = new TPENode("name", nodePerson);
+		TPENode nodeLast   = new TPENode("last", nodeName);
+		
+		nodeEmail.resultvalue = true;
+		nodeLast.resultvalue = true;
+
+		ResultsCollector results = getResults(filename = "datasets/example-book-namenotnested.xml", nodeRoot);
+
+		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
+		assertTrue(matches.size() == 0);
+	}
+	
+	
+	
 	
 	@Test
 	/**
@@ -87,7 +180,8 @@ public class bookQueries {
 		nodeLast.resultvalue = true;
 
 		ResultsCollector results = getResults(filename, nodeRoot);
-
+		results.printResultsStrings();
+		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 4);
 		
@@ -104,7 +198,7 @@ public class bookQueries {
 		expectedresults.put(3, nodeEmail, null);
 		expectedresults.put(3, nodeLast, "<last>Lang</last>");
 
-
+		results.printResultsStrings();
 		assertTrue(expectedresults.hasCorrectMapping(matches));
 	}
 
@@ -171,6 +265,54 @@ public class bookQueries {
 
 		assertTrue(expectedresults.hasCorrectMapping(matches));
 	}
+
+	
+	@Test
+	public void matchSameAsStar() throws SAXException, IOException {
+		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodeEmail  = new TPENode("email", nodePerson);
+		TPENode nodeStar   = new TPENodeStar(nodePerson);
+		
+		nodeEmail.resultvalue = true;
+
+		ResultsCollector results = getResults(filename, nodeRoot);
+		
+		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
+		assertTrue(matches.size() == 3);
+		
+		TestResultsMap expectedresults = new TestResultsMap(3);
+		expectedresults.put(0, nodeEmail, "<email>m@home</email>");
+		expectedresults.put(1, nodeEmail, "<email>a@home</email>");
+		expectedresults.put(2, nodeEmail, "<email>a@work</email>");
+
+		assertTrue(expectedresults.hasCorrectMapping(matches));
+	}
 	
 	
+	
+	@Test
+	public void x1() throws SAXException, IOException {
+		TPENode nodeRoot   = new  TPENode("root");
+
+		TPENode nodePerson1 = new TPENode("person", nodeRoot);
+		TPENode nodePerson2 = new TPENode("person", nodePerson1);
+		TPENode phone       = new TPENode("phone", nodePerson2);
+		TPENode nodeName   = new TPENode("name", nodePerson1);
+		TPENode nodeLast   = new TPENode("last", nodeName);
+
+		phone.resultvalue = true;
+		nodeLast.resultvalue = true;
+
+		ResultsCollector results = getResults("datasets/example-nestedperson.xml", nodeRoot);
+		
+		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
+		assertTrue(matches.size() == 1);
+		
+		TestResultsMap expectedresults = new TestResultsMap(1);
+		expectedresults.put(0, nodeLast, "<last>a</last>");
+		expectedresults.put(0, phone, "<phone>112</phone>");
+
+		assertTrue(expectedresults.hasCorrectMapping(matches));
+	}	
 }
