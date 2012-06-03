@@ -16,18 +16,17 @@ public class BootStrap {
 	 * @throws SAXException 
 	 */
 	public static void main(String[] args) throws SAXException, IOException {
-		String f = new String("datasets/example-book.xml");
+		String f = new String("datasets/example-book-copy.xml");
 
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot = new TPENode("root");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
-		TPENode nodeEmail  = new TPENode("email", nodePerson);
-		TPENode nodeFirst   = new TPENode("first", nodePerson);
-		TPENode nodeLast   = new TPENode("last", nodePerson);
-		
-		nodeEmail.resultvalue = true;
-		nodeLast.resultvalue  = true;
-		nodeFirst.resultvalue = true;
-		
+		TPENode nodeLast = new TPENodeS("last", nodePerson);
+				nodeLast.optional(true);
+				nodeLast.resultvalue = true;
+		TPENode nodeFirst = new TPENodeS("first", nodePerson);
+				nodeFirst.resultvalue = true;
+		new TPENode("email", nodePerson);
+				
 		ResultsCollector collection = new ResultsCollector();
 
 		BootStrap.parse(f, nodeRoot, collection);

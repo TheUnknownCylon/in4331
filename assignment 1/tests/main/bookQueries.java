@@ -182,7 +182,6 @@ public class bookQueries {
 		nodeLast.resultvalue = true;
 
 		ResultsCollector results = getResults(filename, nodeRoot);
-		results.printResultsStrings();
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 4);
@@ -200,7 +199,6 @@ public class bookQueries {
 		expectedresults.put(3, nodeEmail, null);
 		expectedresults.put(3, nodeLast, "<last>Lang</last>");
 
-		results.printResultsStrings();
 		assertTrue(expectedresults.hasCorrectMapping(matches));
 	}
 
@@ -316,5 +314,39 @@ public class bookQueries {
 		expectedresults.put(0, phone, "<phone>112</phone>");
 
 		assertTrue(expectedresults.hasCorrectMapping(matches));
-	}	
+	}
+	
+	@Test
+	/**
+	 * Test Query from book.
+	 * 
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public void x2() throws SAXException, IOException {
+		TPENode nodeRoot = new TPENode("root");
+		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodeLast = new TPENodeS("last", nodePerson);
+				nodeLast.optional(true);
+				nodeLast.resultvalue = true;
+		TPENode nodeFirst = new TPENodeS("first", nodePerson);
+				nodeFirst.resultvalue = true;
+		TPENode nodeEmail = new TPENode("email", nodePerson);
+				nodeEmail.addPredicate(new StringCompare("a@home"));
+
+		ResultsCollector results = getResults("datasets/example-book.xml", nodeRoot);
+		
+		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
+
+		assertTrue(matches.size() == 1);
+		
+		TestResultsMap expectedresults = new TestResultsMap(1);
+		expectedresults.put(0, nodeFirst, "<first>Al</first>");
+		expectedresults.put(0, nodeLast, "<last>Hart</last>");
+
+		assertTrue(expectedresults.hasCorrectMapping(matches));
+	}
+		
+	
+	
 }

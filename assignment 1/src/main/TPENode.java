@@ -74,7 +74,7 @@ public class TPENode {
 	 */
 	public String name() {
 		if(parent != null) {
-			return parent.name() + "/" + name;
+			return parent.name() + (isSlashSlash()?"//":"/") + name;
 		} else {
 			return name;
 		}
@@ -191,6 +191,11 @@ public class TPENode {
 		}
 		
 		return alldescendants;
+	}
+	
+	
+	public boolean isSlashSlash() {
+		return false;
 	}
 	
 	

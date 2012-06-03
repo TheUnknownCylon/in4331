@@ -90,9 +90,14 @@ public class StackEval implements ContentHandler {
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
-					m = new Match(currentPre, parentstack.top(depth()-1), node, depth(), i);
-					allOpenMatches.push(m);
+					Match toPushOn = parentstack.top(depth()-1);
+					if(node.isSlashSlash()) {
+						toPushOn = allOpenMatches.peek();
+					}
 					
+					m = new Match(currentPre, toPushOn, node, depth(), i);
+					allOpenMatches.push(m);
+										
 					node.stack().push(m);
 					i++;
 				}
@@ -180,7 +185,6 @@ public class StackEval implements ContentHandler {
 	 * @return
 	 */
 	private int depth() {
-		//return allOpenMatches.size();
 		return depth;
 	}
 	
