@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 
+import predicates.SimplePredicate;
+
 public class TPENode {	
 	/**
 	 * Tag name for the node. 
@@ -38,7 +40,7 @@ public class TPENode {
 	 * TODO: AND makes no sense for String values here, but other kinds can
 	 * 		 be added later, such as numeric checks etc.
 	 */
-	private ArrayList<String> predicates = new ArrayList<String>();
+	private ArrayList<SimplePredicate> predicates = new ArrayList<SimplePredicate>();
 	
 	/**
 	 * Set to true if the value of this node is in the result list.
@@ -163,7 +165,7 @@ public class TPENode {
 	 * Returns the first predicate string.
 	 * @return
 	 */
-	public String getPredicate() {
+	public SimplePredicate getPredicate() {
 		return predicates.get(0);
 	}
 	
@@ -171,8 +173,8 @@ public class TPENode {
 	/**
 	 * Add a predicate to this node.
 	 */
-	public void addPredicate(String value) {
-		predicates.add(value);
+	public void addPredicate(SimplePredicate p) {
+		predicates.add(p);
 	}
 	
 	/**

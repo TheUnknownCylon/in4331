@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import predicates.StringCompare;
+
 @SuppressWarnings("unused")
 public class bookQueries {
 
@@ -81,7 +83,7 @@ public class bookQueries {
 		TPENode nodeLast   = new TPENode("last", nodeName);
 		
 		nodeEmail.resultvalue = true;
-		nodeEmail.addPredicate("m@home");
+		nodeEmail.addPredicate(new StringCompare("m@home"));
 		nodeLast.resultvalue = true;
 
 		ResultsCollector results = getResults(filename, nodeRoot);
@@ -112,7 +114,7 @@ public class bookQueries {
 		
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
-		nodeLast.addPredicate("Hart");
+		nodeLast.addPredicate(new StringCompare("Hart"));
 
 		ResultsCollector results = getResults(filename, nodeRoot);
 

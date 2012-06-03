@@ -204,7 +204,7 @@ public class StackEval implements ContentHandler {
 		if(!n.hasPredicates()) {
 			return true;
 		}
-		return n.getPredicate().equals(m.data());
+		return n.getPredicate().match(m.data());
 	}
 	
 	

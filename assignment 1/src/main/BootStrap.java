@@ -15,29 +15,18 @@ public class BootStrap {
 	 * @throws IOException 
 	 * @throws SAXException 
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SAXException, IOException {
 		String f = new String("datasets/example-book.xml");
 
-		TPENode nodeRoot   = new  TPENode("root");
+		TPENode nodeRoot   = new TPENode("root");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
-				nodePerson.resultvalue = true;
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
-			    nodeEmail.optional(true);
-			    //nodeEmail.resultvalue = true;
-			    
-		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
-		TPENode nodeName   = new TPENode("name", nodePerson);
-				//nodeName.resultvalue = true;
-		TPENode nodeLast   = //new TPENodeStar(nodeName, "* 1");
-							 new TPENode("last", nodeName);
-				//nodeLast.resultvalue = true;
+		TPENode nodeFirst   = new TPENode("first", nodePerson);
+		TPENode nodeLast   = new TPENode("last", nodePerson);
 		
-		//TPENode nodeName   = new TPENodeStar(nodePerson, "* 1");
-		//TPENode nodeName2   = new TPENode("name", nodePerson);
-		//TPENode nodeLast2   = //new TPENodeStar(nodeName, "* 1");
-		//					 new TPENode("last", nodeName2);
-
+		nodeEmail.resultvalue = true;
+		nodeLast.resultvalue  = true;
+		nodeFirst.resultvalue = true;
 		
 		ResultsCollector collection = new ResultsCollector();
 
