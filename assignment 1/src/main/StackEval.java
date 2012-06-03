@@ -70,13 +70,42 @@ public class StackEval implements ContentHandler {
 	public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
 		throws SAXException {
 
-		Match m = null;
+		matchNewElement(localName, false, "");
+		
+		//add the open tag, including its attributes, to all open matches as data of the open matches
+		addTextToOpenMatches("<"+localName);
+		for(int j =0; j < atts.getLength(); j++) {
+			addTextToOpenMatches(" "+atts.getLocalName(j)+"=\""+atts.getValue(j)+"\"");
+		}
+		addTextToOpenMatches(">");
+		
+		
+		//now try to find out if the open-tag is a tag to match
+		preOfOpenNodes.push(currentPre);
 
+		
+		//also try to match the attributes of the element
+		for(int j =0; j < atts.getLength(); j++) {
+			matchNewElement(atts.getLocalName(j), true, atts.getValue(j));
+		}
+		
+		//moving to the next element, increase the pre-number
+		currentPre++;
+	}
+	
+	/**
+	 * 
+	 * @param localName The match its name.
+	 * @param isattribute If the given match is being done for an attribute.
+	 * @param initvalue Has only to be set when isattribute == true.
+	 */
+	private void matchNewElement(String localName, boolean isattribute, String initvalue) {
+		Match m = null;
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			
 			//condition 1
-			if( node.canPush(localName)) {
-				
+			if( node.canPush(localName, isattribute)) {
+
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
@@ -92,26 +121,20 @@ public class StackEval implements ContentHandler {
 					if(!node.isRootNode()) toPushOn = parentstack.top(depth());
 					if(node.isSlashSlash() && !node.isRootNode()) 
 						toPushOn = allOpenMatches.peek();
-
-					m = new Match(currentPre, toPushOn, node, depth()+1);
-					allOpenMatches.push(m);
+					
+					if(!isattribute) {
+						m = new Match(currentPre, toPushOn, node, depth()+1);
+						allOpenMatches.push(m);
+						node.stack().push(m);
+					} else {
+						m = new MatchAttribute(currentPre, toPushOn, node, depth()+1, initvalue);
+					}
 									
-					node.stack().push(m);
+					
 				}
 			}
 		}
-		addTextToOpenMatches("<"+localName+">");
-		
-		
-		for(int j =0; j < atts.getLength(); j++) {
-			System.out.println("ATT: "+atts.getLocalName(j));
-		}
-		
-		preOfOpenNodes.push(currentPre);
-		currentPre++;			
-
 	}
-	
 	
 	/**
 	 * Fire end element event.
@@ -127,7 +150,7 @@ public class StackEval implements ContentHandler {
 				
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
-			if( node.canPush(localName)) {
+			if( node.canPush(localName, false)) {
 				if ( nodestack.matches.size() > 0 &&
 					 nodestack.top().getStatus() == TagState.OPEN &&
 					 nodestack.top().prenumber() == preOfLastOpen

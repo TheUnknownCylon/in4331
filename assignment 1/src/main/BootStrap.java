@@ -10,6 +10,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import resultcollectors.ResultsCollector;
 import resultcollectors.ResultsCollectorMemory;
 import tpenodes.TPENode;
+import tpenodes.TPENodeAttribute;
 
 
 public class BootStrap {
@@ -25,6 +26,10 @@ public class BootStrap {
 		
 		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
+		TPENode nodePersonAtt = new TPENodeAttribute("name", nodePerson);
+				nodePersonAtt.resultvalue = true;
+		//		nodePersonAtt.optional(true);
+		
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
 		TPENode nodeLast   = new TPENode("last", nodeName);

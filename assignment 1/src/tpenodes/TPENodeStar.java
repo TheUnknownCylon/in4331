@@ -17,10 +17,10 @@ public class TPENodeStar extends TPENode {
 	
 	@Override
 	/**
-	 * Returns always true, in order to accept all.
+	 * We accept all but attributes.
 	 */
-	public boolean canPush(String name) {
-		return true;
+	public boolean canPush(String name, boolean isattribute) {
+		return !isattribute;
 	}
 
 }

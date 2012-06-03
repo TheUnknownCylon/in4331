@@ -1,0 +1,25 @@
+<people>						<!-- 0 -->
+  <person lang="en" gender="m">	<!-- 1 -->
+    <email>m@home</email>		<!-- 2 -->
+    <name>						<!-- 3 -->
+      <first>Mary</first>		<!-- 4 -->
+      <last>Jones</last> 		<!-- 5 -->
+    </name>
+  </person>
+  
+  <person lang="nl">			<!-- 6 -->
+    <name>						<!-- 7 -->
+      <first>Bob</first>		<!-- 8 -->
+      <last>Lang</last>			<!-- 9 -->
+    </name>
+  </person>
+
+  <person gender="f">			<!-- 10 -->
+    <email>a@home</email>		<!-- 11 -->
+    <email>a@work</email>		<!-- 12 -->
+    <name>						<!-- 13 -->
+      <first>Al</first>			<!-- 14 -->
+      <last>Hart</last>			<!-- 15 -->
+    </name>
+  </person>
+</people>

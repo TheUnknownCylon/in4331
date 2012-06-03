@@ -93,10 +93,11 @@ public class TPENode {
 	/**
 	 * Returns true iff the node should hold the node.
 	 * @param name
+	 * @param isattribute 
 	 * @return
 	 */
-	public boolean canPush(String name) {
-		return name.equals(this.name);
+	public boolean canPush(String name, boolean isattribute) {
+		return isattribute == false && name.equals(this.name);
 	}
 	
 
