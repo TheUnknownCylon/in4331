@@ -10,7 +10,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import resultcollectors.ResultsCollector;
 import resultcollectors.ResultsCollectorMemory;
 import tpenodes.TPENode;
-import tpenodes.TPENodeS;
 
 
 public class BootStrap {
@@ -21,7 +20,7 @@ public class BootStrap {
 	 * @throws SAXException 
 	 */
 	public static void main(String[] args) throws SAXException, IOException {
-		String f = new String("datasets/example-book.xml");
+		String f = new String("datasets/example-book-copy.xml");
 
 		
 		TPENode nodeRoot   = new TPENode("people");

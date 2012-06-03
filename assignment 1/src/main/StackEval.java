@@ -70,7 +70,6 @@ public class StackEval implements ContentHandler {
 	public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
 		throws SAXException {
 
-		int i = 0;
 		Match m = null;
 
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
@@ -94,16 +93,19 @@ public class StackEval implements ContentHandler {
 					if(node.isSlashSlash() && !node.isRootNode()) 
 						toPushOn = allOpenMatches.peek();
 
-					m = new Match(currentPre, toPushOn, node, depth()+1, i);
+					m = new Match(currentPre, toPushOn, node, depth()+1);
 					allOpenMatches.push(m);
 									
 					node.stack().push(m);
-					i++;
 				}
 			}
 		}
 		addTextToOpenMatches("<"+localName+">");
 		
+		
+		for(int j =0; j < atts.getLength(); j++) {
+			System.out.println("ATT: "+atts.getLocalName(j));
+		}
 		
 		preOfOpenNodes.push(currentPre);
 		currentPre++;			

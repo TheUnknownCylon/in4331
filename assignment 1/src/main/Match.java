@@ -49,14 +49,13 @@ public class Match {
 	 * @param parent
 	 * @param s
 	 */
-	public Match(int prenumber, Match parent, TPENode tpenode, int depth, int id) {
+	public Match(int prenumber, Match parent, TPENode tpenode, int depth) {
 		this.state = TagState.OPEN;
 		this.parent = parent;
 		this.prenumber = prenumber;
 		
 		this.tpenode = tpenode;
 		
-		this.id = id;
 		this.depth = depth;
 		
 		//inform our parent that we are one of is childs :)
