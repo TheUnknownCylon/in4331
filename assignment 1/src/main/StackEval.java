@@ -60,12 +60,6 @@ public class StackEval implements ContentHandler {
 		this.results = results;
 	}	
 	
-	/**
-	 * The algorithm implementation needs to be aware of the depth of the
-	 * current node. This information is kept in this depth variable.
-	 */
-	private int depth;
-	
 	
 	/**
 	 * When a node nd in a document d is found to satisfy the ancestor
@@ -77,7 +71,6 @@ public class StackEval implements ContentHandler {
 
 		int i = 0;
 		Match m = null;
-		depth++;
 
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
 			
@@ -89,18 +82,18 @@ public class StackEval implements ContentHandler {
 				// a query node p having a parent in the query
 				TPEStack parentstack = node.isRootNode()?null:node.parent().stack();
 				if( 
-					node.isRootNode() && (depth == 1 || node.isSlashSlash()) ||
-					parentstack != null && parentstack.top(depth()-1) == null ||
-					parentstack != null && parentstack.top(depth()-1).getStatus() == TagState.OPEN
+					node.isRootNode() && (depth() == 0 || node.isSlashSlash()) ||
+					parentstack != null && parentstack.top(depth()) == null ||
+					parentstack != null && parentstack.top(depth()).getStatus() == TagState.OPEN
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
 					Match toPushOn = null;
-					if(!node.isRootNode()) toPushOn = parentstack.top(depth()-1);
+					if(!node.isRootNode()) toPushOn = parentstack.top(depth());
 					if(node.isSlashSlash() && !node.isRootNode()) 
 						toPushOn = allOpenMatches.peek();
 
-					m = new Match(currentPre, toPushOn, node, depth(), i);
+					m = new Match(currentPre, toPushOn, node, depth()+1, i);
 					allOpenMatches.push(m);
 									
 					node.stack().push(m);
@@ -117,8 +110,11 @@ public class StackEval implements ContentHandler {
 	}
 	
 	
+	/**
+	 * Fire end element event.
+	 * Do the algorithm-stuff for this close-event.
+	 */
 	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
-		depth--;
 		addTextToOpenMatches("</"+localName+">");
 		
 		//we need to find out if the element ending now correspond to matches
@@ -187,11 +183,12 @@ public class StackEval implements ContentHandler {
 
 	
 	/**
-	 * Returns the depth of open nodes.
-	 * @return
+	 * The algorithm implementation needs to be aware of the depth of the
+	 * current node. This information is kept in this depth variable.
+	 * @return Returns the depth of open nodes.
 	 */
 	private int depth() {
-		return depth;
+		return preOfOpenNodes.size();
 	}
 	
 	/**
