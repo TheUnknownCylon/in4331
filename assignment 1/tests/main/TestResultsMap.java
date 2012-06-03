@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
+import tpenodes.TPENode;
+
 public class TestResultsMap {
 	private Vector<HashMap<TPENode, String>> excpetedvalues;
 	

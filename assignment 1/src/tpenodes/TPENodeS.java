@@ -1,4 +1,4 @@
-package main;
+package tpenodes;
 
 public class TPENodeS extends TPENode {
 

@@ -1,4 +1,4 @@
-package main;
+package tpenodes;
 
 import java.util.ArrayList;
 
@@ -183,16 +183,20 @@ public class TPENode {
 	 * @return
 	 */
 	public static ArrayList<TPENode> getDescendents(TPENode node) {
-		
 		ArrayList<TPENode> alldescendants  = new ArrayList<TPENode>();
+		alldescendants.add(node);
+
 		for(TPENode n : node.getChildren()) {
-			alldescendants.add(n);
 			alldescendants.addAll(getDescendents(n));
 		}
 		
 		return alldescendants;
 	}
 	
+	
+	public boolean isRootNode() {
+		return parent == null;
+	}
 	
 	public boolean isSlashSlash() {
 		return false;

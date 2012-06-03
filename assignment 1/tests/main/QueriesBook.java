@@ -14,25 +14,14 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import predicates.StringCompare;
+import tpenodes.TPENode;
+import tpenodes.TPENodeS;
+import tpenodes.TPENodeStar;
 
 @SuppressWarnings("unused")
-public class bookQueries {
+public class QueriesBook extends TestFunctionality {
 
 	private String filename = "datasets/example-book.xml";	
-	
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	private ResultsCollector getResults(String filename, TPENode rootnode)
-			throws SAXException, IOException {
-		
-		ResultsCollector resultscollection = new ResultsCollector();
-		BootStrap.parse(filename, rootnode, resultscollection);
-		return resultscollection;
-	}
-
-	
 	
 	@Test
 	/**
@@ -42,7 +31,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void bookExample() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
@@ -66,6 +55,8 @@ public class bookQueries {
 		expectedresults.put(2, nodeEmail, "<email>a@work</email>");
 		expectedresults.put(2, nodeLast, "<last>Hart</last>");
 
+		
+		
 		assertTrue(expectedresults.hasCorrectMapping(matches));
 	}
 	
@@ -76,7 +67,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void bookExamplePredicate() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
@@ -106,7 +97,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void bookExamplePredicate2() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
@@ -145,7 +136,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void bookExampleNameNotNested() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
@@ -170,7 +161,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void bookExampleOptional() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
@@ -209,7 +200,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void bookExampleStar() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
@@ -239,7 +230,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void innerStartQuery() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENodeStar(nodePerson);
@@ -269,7 +260,7 @@ public class bookQueries {
 	
 	@Test
 	public void matchSameAsStar() throws SAXException, IOException {
-		TPENode nodeRoot   = new TPENode("root");
+		TPENode nodeRoot   = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeStar   = new TPENodeStar(nodePerson);
@@ -293,7 +284,7 @@ public class bookQueries {
 	
 	@Test
 	public void x1() throws SAXException, IOException {
-		TPENode nodeRoot   = new  TPENode("root");
+		TPENode nodeRoot   = new  TPENode("people");
 
 		TPENode nodePerson1 = new TPENode("person", nodeRoot);
 		TPENode nodePerson2 = new TPENode("person", nodePerson1);
@@ -324,7 +315,7 @@ public class bookQueries {
 	 * @throws IOException
 	 */
 	public void x2() throws SAXException, IOException {
-		TPENode nodeRoot = new TPENode("root");
+		TPENode nodeRoot = new TPENode("people");
 		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeLast = new TPENodeS("last", nodePerson);
 				nodeLast.optional(true);

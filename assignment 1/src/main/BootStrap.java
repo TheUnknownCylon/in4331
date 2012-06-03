@@ -7,6 +7,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import tpenodes.TPENode;
+import tpenodes.TPENodeS;
+
 
 public class BootStrap {
 
@@ -16,16 +19,18 @@ public class BootStrap {
 	 * @throws SAXException 
 	 */
 	public static void main(String[] args) throws SAXException, IOException {
-		String f = new String("datasets/example-book-copy.xml");
+		String f = new String("datasets/example-book.xml");
 
-		TPENode nodeRoot = new TPENode("root");
-		TPENode nodePerson = new TPENode("person", nodeRoot);
-		TPENode nodeLast = new TPENodeS("last", nodePerson);
-				nodeLast.optional(true);
-				nodeLast.resultvalue = true;
-		TPENode nodeFirst = new TPENodeS("first", nodePerson);
-				nodeFirst.resultvalue = true;
-		new TPENode("email", nodePerson);
+		
+		TPENode nodeRoot   = new TPENode("people");
+		TPENode nodePerson = new TPENodeS("person", nodeRoot);
+		TPENode nodeEmail  = new TPENode("email", nodePerson);
+		TPENode nodeName   = new TPENode("name", nodePerson);
+		TPENode nodeLast   = new TPENode("last", nodeName);
+		
+		nodeEmail.resultvalue = true;
+		nodeLast.resultvalue = true;
+		
 				
 		ResultsCollector collection = new ResultsCollector();
 
@@ -36,7 +41,12 @@ public class BootStrap {
 
 	}
 	
-	public static void parse(String f, TPENode root, ResultsCollector resultscollector) throws SAXException, IOException {		
+	public static void parse(String f, TPENode root, ResultsCollector resultscollector) throws SAXException, IOException {
+		
+		if(!root.isRootNode()) {
+			throw new RuntimeException("Provided root node is not a root node!");
+		}
+		
 		XMLReader parser = XMLReaderFactory.createXMLReader();
 		ContentHandler contentHandler = new StackEval(root, resultscollector);
 		parser.setContentHandler(contentHandler);

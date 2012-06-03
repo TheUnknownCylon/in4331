@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import tpenodes.TPENode;
+
 public class ResultsCollector {
 	private ArrayList<Match> results = new ArrayList<Match>();
 	

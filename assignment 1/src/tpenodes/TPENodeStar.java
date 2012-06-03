@@ -1,4 +1,4 @@
-package main;
+package tpenodes;
 
 /**
  * Implementation for the *-node.

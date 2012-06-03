@@ -7,6 +7,9 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import tpenodes.TPENode;
+import tpenodes.TPEStack;
+
 /**
  * SAX Stack evaluation.
  * Nodes are pushed to the stack and removed from the stack. This is done in a
@@ -75,9 +78,8 @@ public class StackEval implements ContentHandler {
 		int i = 0;
 		Match m = null;
 		depth++;
-		
+
 		for(TPENode node : TPENode.getDescendents(rootNode)) {
-			TPEStack parentstack = node.parent().stack();
 			
 			//condition 1
 			if( node.canPush(localName)) {
@@ -85,19 +87,22 @@ public class StackEval implements ContentHandler {
 				//condition 2
 				//a second condition applies in the case of stack s created for
 				// a query node p having a parent in the query
-				if( parentstack.top(depth()-1) == null ||
-					parentstack.top(depth()-1).getStatus() == TagState.OPEN
+				TPEStack parentstack = node.isRootNode()?null:node.parent().stack();
+				if( 
+					node.isRootNode() && (depth == 1 || node.isSlashSlash()) ||
+					parentstack != null && parentstack.top(depth()-1) == null ||
+					parentstack != null && parentstack.top(depth()-1).getStatus() == TagState.OPEN
 				) {
 					//create a match satisfying the ancestor conditions of query
 					// node s.p
-					Match toPushOn = parentstack.top(depth()-1);
-					if(node.isSlashSlash()) {
+					Match toPushOn = null;
+					if(!node.isRootNode()) toPushOn = parentstack.top(depth()-1);
+					if(node.isSlashSlash() && !node.isRootNode()) 
 						toPushOn = allOpenMatches.peek();
-					}
-					
+
 					m = new Match(currentPre, toPushOn, node, depth(), i);
 					allOpenMatches.push(m);
-										
+									
 					node.stack().push(m);
 					i++;
 				}
@@ -124,7 +129,8 @@ public class StackEval implements ContentHandler {
 		for( TPENode node : TPENode.getDescendents(rootNode)) {
 			TPEStack nodestack = node.stack();
 			if( node.canPush(localName)) {
-				if ( nodestack.top().getStatus() == TagState.OPEN &&
+				if ( nodestack.matches.size() > 0 &&
+					 nodestack.top().getStatus() == TagState.OPEN &&
 					 nodestack.top().prenumber() == preOfLastOpen
 				) {
 					//we found a corresponding match!
@@ -158,7 +164,7 @@ public class StackEval implements ContentHandler {
 					//If we have not died, it means that all our sub-nodes 
 					// are correct. In the case that parent is our root-node,
 					// this match is a solution for the query.
-					if(died == false && m.tpenode.parent().name().equals("root")) {
+					if(died == false && m.tpenode.isRootNode()) {
 						results.addMatch(m);
 					}
 				
