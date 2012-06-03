@@ -33,7 +33,6 @@ public class QueriesWithAttributes extends TestFunctionality {
 		
 		ResultsCollectorMemory results = getResults("datasets/example-book-with-attributes.xml", nodeRoot);
 		
-		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 2);
 		
@@ -64,9 +63,7 @@ public class QueriesWithAttributes extends TestFunctionality {
 		
 		ResultsCollectorMemory results = getResults("datasets/example-book-with-attributes.xml", nodeRoot);
 		
-		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
-		results.printResultsStrings();
 		assertTrue(matches.size() == 1);
 		
 		TestResultsMap expectedresults = new TestResultsMap(1);
@@ -93,9 +90,7 @@ public class QueriesWithAttributes extends TestFunctionality {
 		
 		ResultsCollectorMemory results = getResults("datasets/example-book-with-attributes.xml", nodeRoot);
 		
-		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
-		results.printResultsStrings();
 		assertTrue(matches.size() == 3);
 		
 		TestResultsMap expectedresults = new TestResultsMap(3);

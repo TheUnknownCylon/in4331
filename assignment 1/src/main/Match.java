@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import tpenodes.TPENode;
+import tpenodes.TPENodeAttribute;
 
 /**
  *
@@ -212,7 +213,49 @@ public class Match {
 		return value.toString();
 	}
 
+
+	/**
+	 * Removes all children which are Attributes AND do not match their predicate.
+	 */
+	public void removeFailingAttributes() {
+		//Concurrency problems, first get the list of nodes to kill,
+		// once all collected, kill them
+		ArrayList<Match> nodesToKill = new ArrayList<Match>();
+		
+		for(TPENode key : children.keySet()) {
+			if(key instanceof TPENodeAttribute) {
+				for(Match x : children.get(key)) {
+					if(x.checkPredicate()==false) {
+						nodesToKill.add(x);
+					}
+				}
+			}
+		}
+		
+		//kill them
+		for(Match m :nodesToKill) {
+			m.die();
+		}
+	}
 	
+	
+	/**
+	 * Checks whether m holds it predicates.
+	 * @param m
+	 * @return
+	 */
+	public boolean checkPredicate() {
+		TPENode n = tpenode;
+		if(!n.hasPredicates()) {
+			return true;
+		}
+		try {
+			return n.getPredicate().match(data());
+		} catch (Exception e) {
+			//TODO: log error msg??
+			return false;
+		}
+	}
 
 	
 }

@@ -158,6 +158,10 @@ public class StackEval implements ContentHandler {
 					//we found a corresponding match!
 					// All descendants of this match have been traversed by now.
 					Match m = nodestack.pop();
+
+					//remove all attributes from m which do not hold their predicate
+					// (note, the attributes are still encoded in the node its data)
+					m.removeFailingAttributes();
 					allOpenMatches.pop();
 
 					//now do the post-check, if it fails, the node dies and is ignored:
@@ -169,7 +173,7 @@ public class StackEval implements ContentHandler {
 					//    (note: all children are valid matches themselves here!)
 					boolean died = false;
 					
-					if(!checkPredicate(m)) {
+					if(!m.checkPredicate()) {
 						died = true;
 					}
 					
@@ -224,24 +228,6 @@ public class StackEval implements ContentHandler {
 	private void addTextToOpenMatches(String text) {
 		for(Match m : allOpenMatches) {
 			m.appendText(text);
-		}
-	}
-	
-	/**
-	 * Checks whether m holds it predicates.
-	 * @param m
-	 * @return
-	 */
-	private boolean checkPredicate(Match m) {
-		TPENode n = m.tpenode;
-		if(!n.hasPredicates()) {
-			return true;
-		}
-		try {
-			return n.getPredicate().match(m.data());
-		} catch (Exception e) {
-			//TODO: log error msg??
-			return false;
 		}
 	}
 	

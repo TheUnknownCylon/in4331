@@ -15,4 +15,12 @@ public class MatchAttribute extends Match{
 	@Override
 	public void appendText(String text) {}
 	
+	@Override
+	public void addChild(TPENode s, Match m) {
+		throw new RuntimeException("Can not add an child node to an attribute!");		
+	}
+	
+	public String data() {
+		return this.toString();
+	}
 }
