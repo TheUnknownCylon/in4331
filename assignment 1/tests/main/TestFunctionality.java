@@ -4,14 +4,15 @@ import java.io.IOException;
 
 import org.xml.sax.SAXException;
 
+import resultcollectors.ResultsCollectorMemory;
 import tpenodes.TPENode;
 
 public abstract class TestFunctionality {
 	
-	protected ResultsCollector getResults(String filename, TPENode rootnode)
+	protected static ResultsCollectorMemory getResults(String filename, TPENode rootnode)
 			throws SAXException, IOException {
 		
-		ResultsCollector resultscollection = new ResultsCollector();
+		ResultsCollectorMemory resultscollection = new ResultsCollectorMemory();
 		BootStrap.parse(filename, rootnode, resultscollection);
 		return resultscollection;
 	}

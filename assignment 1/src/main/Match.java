@@ -186,10 +186,13 @@ public class Match {
 
 	/**
 	 * Some text has to be added to the string value for this match.
+	 * Note that text will only be appended in case the node content must be stored
+	 * for printing later (result) or when there is a predicate to check.
 	 * @param text
 	 */
 	public void appendText(String text) {
-		value.append(text);		
+		if(tpenode.resultvalue || tpenode.hasPredicates())
+			value.append(text);
 	}
 	
 	

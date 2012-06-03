@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import resultcollectors.ResultsCollectorMemory;
 import tpenodes.TPENode;
 import tpenodes.TPENodeS;
 
@@ -34,7 +35,7 @@ public class QueriesStart extends TestFunctionality {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 		
-		ResultsCollector results = getResults("datasets/example-book.xml", nodeRoot);
+		ResultsCollectorMemory results = getResults("datasets/example-book.xml", nodeRoot);
 		
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
@@ -63,7 +64,7 @@ public class QueriesStart extends TestFunctionality {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 		
-		ResultsCollector results = getResults("datasets/example-book.xml", nodePerson);
+		ResultsCollectorMemory results = getResults("datasets/example-book.xml", nodePerson);
 			
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 0);
@@ -81,7 +82,7 @@ public class QueriesStart extends TestFunctionality {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 		
-		ResultsCollector results = getResults("datasets/example-book.xml", nodePerson);
+		ResultsCollectorMemory results = getResults("datasets/example-book.xml", nodePerson);
 		
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();

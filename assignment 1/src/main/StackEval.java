@@ -7,6 +7,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import resultcollectors.ResultsCollector;
 import tpenodes.TPENode;
 import tpenodes.TPEStack;
 
@@ -211,7 +212,12 @@ public class StackEval implements ContentHandler {
 		if(!n.hasPredicates()) {
 			return true;
 		}
-		return n.getPredicate().match(m.data());
+		try {
+			return n.getPredicate().match(m.data());
+		} catch (Exception e) {
+			//TODO: log error msg??
+			return false;
+		}
 	}
 	
 	

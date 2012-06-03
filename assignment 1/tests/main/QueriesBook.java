@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import main.BootStrap;
-import main.ResultsCollector;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import predicates.StringCompare;
+import resultcollectors.ResultsCollectorMemory;
 import tpenodes.TPENode;
 import tpenodes.TPENodeS;
 import tpenodes.TPENodeStar;
@@ -40,7 +40,7 @@ public class QueriesBook extends TestFunctionality {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 3);
@@ -77,7 +77,7 @@ public class QueriesBook extends TestFunctionality {
 		nodeEmail.addPredicate(new StringCompare("m@home"));
 		nodeLast.resultvalue = true;
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 1);
@@ -107,7 +107,7 @@ public class QueriesBook extends TestFunctionality {
 		nodeLast.resultvalue = true;
 		nodeLast.addPredicate(new StringCompare("Hart"));
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 2);
@@ -145,7 +145,7 @@ public class QueriesBook extends TestFunctionality {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 
-		ResultsCollector results = getResults(filename = "datasets/example-book-namenotnested.xml", nodeRoot);
+		ResultsCollectorMemory results = getResults(filename = "datasets/example-book-namenotnested.xml", nodeRoot);
 
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 0);
@@ -172,7 +172,7 @@ public class QueriesBook extends TestFunctionality {
 
 		nodeLast.resultvalue = true;
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 4);
@@ -208,7 +208,7 @@ public class QueriesBook extends TestFunctionality {
 
 		nodeStar.resultvalue = true;
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 4);
@@ -239,7 +239,7 @@ public class QueriesBook extends TestFunctionality {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 3);
@@ -267,7 +267,7 @@ public class QueriesBook extends TestFunctionality {
 		
 		nodeEmail.resultvalue = true;
 
-		ResultsCollector results = getResults(filename, nodeRoot);
+		ResultsCollectorMemory results = getResults(filename, nodeRoot);
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 3);
@@ -295,7 +295,7 @@ public class QueriesBook extends TestFunctionality {
 		phone.resultvalue = true;
 		nodeLast.resultvalue = true;
 
-		ResultsCollector results = getResults("datasets/example-nestedperson.xml", nodeRoot);
+		ResultsCollectorMemory results = getResults("datasets/example-nestedperson.xml", nodeRoot);
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 		assertTrue(matches.size() == 1);
@@ -325,7 +325,7 @@ public class QueriesBook extends TestFunctionality {
 		TPENode nodeEmail = new TPENode("email", nodePerson);
 				nodeEmail.addPredicate(new StringCompare("a@home"));
 
-		ResultsCollector results = getResults("datasets/example-book.xml", nodeRoot);
+		ResultsCollectorMemory results = getResults("datasets/example-book.xml", nodeRoot);
 		
 		ArrayList<HashMap<TPENode, Match>> matches = results.getResultMatches();
 

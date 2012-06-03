@@ -7,6 +7,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import resultcollectors.ResultsCollector;
+import resultcollectors.ResultsCollectorMemory;
 import tpenodes.TPENode;
 import tpenodes.TPENodeS;
 
@@ -23,7 +25,7 @@ public class BootStrap {
 
 		
 		TPENode nodeRoot   = new TPENode("people");
-		TPENode nodePerson = new TPENodeS("person", nodeRoot);
+		TPENode nodePerson = new TPENode("person", nodeRoot);
 		TPENode nodeEmail  = new TPENode("email", nodePerson);
 		TPENode nodeName   = new TPENode("name", nodePerson);
 		TPENode nodeLast   = new TPENode("last", nodeName);
@@ -31,8 +33,7 @@ public class BootStrap {
 		nodeEmail.resultvalue = true;
 		nodeLast.resultvalue = true;
 		
-				
-		ResultsCollector collection = new ResultsCollector();
+		ResultsCollectorMemory collection = new ResultsCollectorMemory();
 
 		BootStrap.parse(f, nodeRoot, collection);
 		collection.printResultsPre();		System.out.println("=============");
