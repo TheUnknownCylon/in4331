@@ -27,6 +27,20 @@ public class ResultsCollectorMemory extends ResultsCollector {
 		return results;
 	}
 	
+	public ArrayList<HashMap<String, String>> getResultsByNodeName() {
+		ArrayList<HashMap<String, String>> r = new ArrayList<HashMap<String, String>>();
+
+		for(HashMap<TPENode, Match> m : getResultMatches()) {
+			HashMap<String, String> row = new HashMap<String, String>();
+			for(TPENode n : m.keySet()) {
+				row.put(n.toString(), m.get(n).data());
+			}
+			r.add(row);
+		}
+		
+		return r;
+	}
+	
 	
 	/**
 	 * Prints simply all pre-numbers for each root match.
