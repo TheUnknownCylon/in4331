@@ -29,11 +29,10 @@ public class AuthorsJob {
 	Configuration conf = new Configuration();
 
 	/* We expect two arguments */
-	/*
 	args = new String[2];
 	args[0] = "/home/remco/documents/in4331/small/";
 	args[1] = "results.txt";
-	*/
+	
 	if (args.length != 2) {
 	  System.err.println("Usage: AuthorsJob <in> <out>");
 	  System.exit(2);
@@ -42,8 +41,9 @@ public class AuthorsJob {
 	/* Allright, define and submit the job */
 	Job job = new Job(conf, "Authors count");
 
-	/* Define the Mapper and the Reducer */
+	/* Define the Mapper, Combiner, and the Reducer */
 	job.setMapperClass(Authors.AuthorsMapper.class);
+	job.setCombinerClass(Authors.CountReducer.class);
 	job.setReducerClass(Authors.CountReducer.class);
 
 	/* Define the output type */

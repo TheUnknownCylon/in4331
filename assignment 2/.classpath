@@ -7,7 +7,11 @@
 	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/hadoop-core-1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-streaming-1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-all-1.9.7.jar"/>
 	<classpathentry kind="lib" path="lib/org.apache.commons.httpclient.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/WDM-1"/>
+	<classpathentry kind="lib" path="/home/remco/downloads/cascading-2.0.0/cascading-core-2.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/remco/downloads/cascading-2.0.0/cascading-hadoop-2.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
