@@ -19,7 +19,7 @@ import wdm.xmlhelper.XMLInput;
 public class Movies {
 
 	private static String input = "datasets/movies_onefile";
-	private static String output = "movies-result";
+	private static String output = "results/movies";
 	
 	public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
 		

@@ -28,10 +28,10 @@ public class AuthorsJob {
 	 */
 	Configuration conf = new Configuration();
 
-	/* We expect two arguments */
-	args = new String[2];
-	args[0] = "/home/remco/documents/in4331/small/";
-	args[1] = "results.txt";
+//	/* We expect two arguments */
+//	args = new String[2];
+//	args[0] = "/home/remco/documents/in4331/small/";
+//	args[1] = "results/example1";
 	
 	if (args.length != 2) {
 	  System.err.println("Usage: AuthorsJob <in> <out>");
