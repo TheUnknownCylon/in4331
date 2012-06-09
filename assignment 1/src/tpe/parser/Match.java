@@ -1,10 +1,10 @@
-package main;
+package tpe.parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import tpenodes.TPENode;
-import tpenodes.TPENodeAttribute;
+import tpe.parser.nodes.TPENode;
+import tpe.parser.nodes.TPENodeAttribute;
 
 /**
  *

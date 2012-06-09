@@ -1,4 +1,4 @@
-package tpenodes;
+package tpe.parser.nodes;
 
 /**
  * Implementation for the *-node.

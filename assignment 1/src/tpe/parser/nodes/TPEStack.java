@@ -1,9 +1,10 @@
-package tpenodes;
+package tpe.parser.nodes;
 
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
-import main.Match;
+import tpe.parser.Match;
+
 
 /**
  * For each node p in the tree-pattern, a TPEStack is created, on which the

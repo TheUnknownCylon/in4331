@@ -1,4 +1,4 @@
-package main;
+package tpe.parser;
 
 import static org.junit.Assert.*;
 
@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import resultcollectors.ResultsCollectorMemory;
-import tpenodes.TPENode;
-import tpenodes.TPENodeS;
+import tpe.parser.Match;
+import tpe.parser.collectors.ResultsCollectorMemory;
+import tpe.parser.nodes.TPENode;
+import tpe.parser.nodes.TPENodeS;
 
 /**
  * There are different ways to start a query.

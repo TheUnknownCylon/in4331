@@ -1,11 +1,12 @@
-package main;
+package tpe.parser;
 
 import java.io.IOException;
 
+
 import org.xml.sax.SAXException;
 
-import resultcollectors.ResultsCollectorMemory;
-import tpenodes.TPENode;
+import tpe.parser.collectors.ResultsCollectorMemory;
+import tpe.parser.nodes.TPENode;
 
 public abstract class TestFunctionality {
 	
@@ -13,7 +14,7 @@ public abstract class TestFunctionality {
 			throws SAXException, IOException {
 		
 		ResultsCollectorMemory resultscollection = new ResultsCollectorMemory();
-		BootStrap.parse(filename, rootnode, resultscollection);
+		Parser.parse(filename, rootnode, resultscollection);
 		return resultscollection;
 	}
 

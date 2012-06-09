@@ -1,4 +1,4 @@
-package main;
+package tpe.parser;
 
 import java.util.Stack;
 
@@ -7,9 +7,9 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import resultcollectors.ResultsCollector;
-import tpenodes.TPENode;
-import tpenodes.TPEStack;
+import tpe.parser.collectors.ResultsCollector;
+import tpe.parser.nodes.TPENode;
+import tpe.parser.nodes.TPEStack;
 
 /**
  * SAX Stack evaluation.

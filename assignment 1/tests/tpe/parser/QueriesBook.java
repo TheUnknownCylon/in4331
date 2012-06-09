@@ -1,4 +1,4 @@
-package main;
+package tpe.parser;
 
 import static org.junit.Assert.*;
 
@@ -6,17 +6,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import main.BootStrap;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import predicates.StringCompare;
-import resultcollectors.ResultsCollectorMemory;
-import tpenodes.TPENode;
-import tpenodes.TPENodeS;
-import tpenodes.TPENodeStar;
+import tpe.parser.BootStrap;
+import tpe.parser.Match;
+import tpe.parser.collectors.ResultsCollectorMemory;
+import tpe.parser.nodes.TPENode;
+import tpe.parser.nodes.TPENodeS;
+import tpe.parser.nodes.TPENodeStar;
+import tpe.parser.predicates.StringCompare;
 
 @SuppressWarnings("unused")
 public class QueriesBook extends TestFunctionality {

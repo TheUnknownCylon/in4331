@@ -1,12 +1,12 @@
-package resultcollectors;
+package tpe.parser.collectors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import main.Match;
 
-import tpenodes.TPENode;
+import tpe.parser.Match;
+import tpe.parser.nodes.TPENode;
 
 public class ResultsCollectorMemory extends ResultsCollector {
 	private ArrayList<Match> results = new ArrayList<Match>();

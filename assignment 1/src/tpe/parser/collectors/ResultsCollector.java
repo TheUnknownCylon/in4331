@@ -1,10 +1,10 @@
-package resultcollectors;
+package tpe.parser.collectors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import tpenodes.TPENode;
-import main.Match;
+import tpe.parser.Match;
+import tpe.parser.nodes.TPENode;
 
 public abstract class ResultsCollector {
 	

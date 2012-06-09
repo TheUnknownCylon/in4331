@@ -1,4 +1,4 @@
-package predicates;
+package tpe.parser.predicates;
 
 public class StringCompare implements SimplePredicate {
 

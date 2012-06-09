@@ -1,13 +1,12 @@
 import java.io.IOException;
 import org.xml.sax.SAXException;
 
-import predicates.SimplePredicate;
-import predicates.StringCompare;
-
-import main.BootStrap;
-import resultcollectors.ResultsCollectorPrinter;
-import tpenodes.TPENode;
-import tpenodes.TPENodeS;
+import tpe.parser.Parser;
+import tpe.parser.collectors.ResultsCollectorPrinter;
+import tpe.parser.nodes.TPENode;
+import tpe.parser.nodes.TPENodeS;
+import tpe.parser.predicates.SimplePredicate;
+import tpe.parser.predicates.StringCompare;
 
 /**
  * Demonstration for a 'large' file.
@@ -24,11 +23,12 @@ public class Demo {
 		ResultsCollectorPrinter collection = new ResultsCollectorPrinter();
 
 		collection.printOpen();
-		BootStrap.parse(f, nodeRoot, collection);
+		Parser.parse(f, nodeRoot, collection);
 		collection.printClose();
 
 	}
 	
+	@SuppressWarnings("unused")
 	private static TPENode gameNames() {
 		TPENode nodeRoot   = new TPENodeS("name");
 		nodeRoot.addPredicate(StringCompare("101 in 1 Sports Megamix (U)"));

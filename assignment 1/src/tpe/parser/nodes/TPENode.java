@@ -1,8 +1,8 @@
-package tpenodes;
+package tpe.parser.nodes;
 
 import java.util.ArrayList;
 
-import predicates.SimplePredicate;
+import tpe.parser.predicates.SimplePredicate;
 
 public class TPENode {	
 	/**

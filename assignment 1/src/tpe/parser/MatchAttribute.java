@@ -1,6 +1,6 @@
-package main;
+package tpe.parser;
 
-import tpenodes.TPENode;
+import tpe.parser.nodes.TPENode;
 
 /**
  * Special match class, for attributes

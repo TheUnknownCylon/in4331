@@ -1,10 +1,12 @@
-package main;
+package tpe.parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
-import tpenodes.TPENode;
+
+import tpe.parser.Match;
+import tpe.parser.nodes.TPENode;
 
 public class TestResultsMap {
 	private Vector<HashMap<TPENode, String>> excpetedvalues;

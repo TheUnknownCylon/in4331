@@ -1,4 +1,4 @@
-package tpenodes;
+package tpe.parser.nodes;
 
 public class TPENodeS extends TPENode {
 

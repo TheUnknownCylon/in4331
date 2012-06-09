@@ -1,4 +1,4 @@
-package main;
+package tpe.parser;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import predicates.StringCompare;
 
-import resultcollectors.ResultsCollectorMemory;
-import tpenodes.TPENode;
-import tpenodes.TPENodeAttribute;
+import tpe.parser.Match;
+import tpe.parser.collectors.ResultsCollectorMemory;
+import tpe.parser.nodes.TPENode;
+import tpe.parser.nodes.TPENodeAttribute;
+import tpe.parser.predicates.StringCompare;
 
 public class QueriesWithAttributes extends TestFunctionality {
 
