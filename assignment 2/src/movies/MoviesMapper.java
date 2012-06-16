@@ -43,7 +43,7 @@ public class MoviesMapper extends Mapper<LongWritable, Text, Text, Text> {
 		for(HashMap<String, String> row : c.getResultsByNodeName()) {
 			StringBuffer solution = new StringBuffer();
 			solution.append(row.get("movie/director/first_name")+" ");
-			solution.append(row.get("movie/director/last_name")+"\t:");			
+			solution.append(row.get("movie/director/last_name")+"\t");			
 			solution.append(row.get("movie/title")+"\t");
 			solution.append(row.get("movie/year"));
 				

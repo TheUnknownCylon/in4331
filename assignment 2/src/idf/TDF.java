@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import wdm.xmlhelper.XMLInput;
 
 public class TDF {
-	private static String input = "datasets/book3.14";
+	private static String input = "datasets/movies";
 	private static String output = "results/tdf";
 	
 	public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -23,9 +23,12 @@ public class TDF {
 		Deletedir.deleteDir(output);
 		
 		Configuration conf = new Configuration();
+		conf.set("xmlinput.start", "<movie>");
+		conf.set("xmlinput.end", "</movie>");
 		conf.set("documentcount", "7");
-				
+		
 		Job job = new Job(conf, "IDF");
+		job.setInputFormatClass(XMLInput.class);
 		job.setMapperClass(TDFMapper.class);
 		job.setCombinerClass(TDFCombiner.class);
 		job.setReducerClass(TDFReducer.class);

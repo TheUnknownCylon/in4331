@@ -22,7 +22,9 @@ public class TDFReducer extends Reducer<Text, MapWritable, Text, Text> {
 		for(MapWritable row : values) {
 			for(Writable docid : row.keySet()) {
 				df++;
-				solution.append(((IntWritable)docid).get());
+				solution.append("\"");
+				solution.append(((Text)docid).toString());
+				solution.append("\"");
 				solution.append(":");
 				solution.append(row.get(docid).toString());
 				solution.append(" ");

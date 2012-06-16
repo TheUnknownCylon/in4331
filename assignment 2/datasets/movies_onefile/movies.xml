@@ -251,6 +251,12 @@
 	    <birth_date>1955</birth_date>
 	    <role>Green Goblin / Norman Osborn</role>
 </actor>
+<actor>
+		<last_name>Coppola</last_name>
+	    <first_name>Sofia</first_name>
+	    <birth_date>1971</birth_date>
+	    <role>None - just a test</role>
+</actor>
  </movie>
 
 </movies>
