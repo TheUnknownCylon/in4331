@@ -5,6 +5,8 @@ import java.io.IOException;
 import myhelpers.Deletedir;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -25,8 +27,8 @@ public class TDF {
 		Configuration conf = new Configuration();
 		conf.set("xmlinput.start", "<movie>");
 		conf.set("xmlinput.end", "</movie>");
-		conf.set("documentcount", "7");
-		
+		conf.set("documentcount", documentCount()+"");
+				
 		Job job = new Job(conf, "IDF");
 		job.setInputFormatClass(XMLInput.class);
 		job.setMapperClass(TDFMapper.class);
@@ -41,12 +43,22 @@ public class TDF {
 		FileInputFormat.setInputPaths(job, new Path(input));
 		FileOutputFormat.setOutputPath(job, new Path(output));
 				
-		/* Define multiple outputs for the reducer*/
-		//MultipleOutputs.addNamedOutput(job, "titleAndActor", TextOutputFormat.class, Text.class, Text.class);
-		//MultipleOutputs.addNamedOutput(job, "directorAndTitle", TextOutputFormat.class, Text.class, Text.class);
-		
 		/* Execute the job */
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 		
+	}
+	
+	/**
+	 * Returns the number of documents in the input set.
+	 * Note: for this to work, all documents should be placed in a separate file.
+	 * @return
+	 * @throws IOException 
+	 */
+	private static int documentCount() throws IOException {
+		Configuration conf = new Configuration();
+		Path inputPath = new Path(input);
+		FileSystem fs = inputPath.getFileSystem(conf);
+		FileStatus[] stat = fs.listStatus(inputPath);
+		return stat.length;
 	}
 }
