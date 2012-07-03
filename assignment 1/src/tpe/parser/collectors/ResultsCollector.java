@@ -57,7 +57,11 @@ public abstract class ResultsCollector {
 	protected static String rewriteResultToXMLString(HashMap<TPENode, Match> result) {
 		StringBuffer r = new StringBuffer();
 		for(TPENode noderesult : result.keySet()) {
-			r.append(result.get(noderesult).toString());
+			Match rmatch = result.get(noderesult);
+			
+			//do not print missing optional elements
+			if(rmatch!=null) r.append(rmatch.toString());
+			
 		}
 		return r.toString();
 	}
