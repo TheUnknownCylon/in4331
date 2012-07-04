@@ -17,10 +17,10 @@ public class ResultsCollectorPrinter extends ResultsCollector {
 		System.out.println("</results>");
 	}
 	
-	@Override
 	public void addMatch(Match m) {
 		for(HashMap<TPENode, Match> result : matchToResults(m)) {
-			System.out.println(rewriteResultToXMLString(result).replaceAll(">\\s+<", "><"));
+			//System.out.println(rewriteResultToXMLString(result).replaceAll(">\\s+<", "><"));
+			System.out.println(result);
 		}
 	}
 

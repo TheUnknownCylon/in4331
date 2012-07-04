@@ -54,6 +54,11 @@ public abstract class ResultsCollector {
 		return r;
 	}
 	
+	/**
+	 * Rewrite results to a simple XML String
+	 * @param result
+	 * @return
+	 */
 	protected static String rewriteResultToXMLString(HashMap<TPENode, Match> result) {
 		StringBuffer r = new StringBuffer();
 		for(TPENode noderesult : result.keySet()) {
